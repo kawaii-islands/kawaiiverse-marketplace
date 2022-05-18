@@ -3,16 +3,8 @@ import { Link } from "react-router-dom";
 
 const links = [
 	{
-		title: "About",
-		link: "/",
-	},
-	{
-		title: "Store",
-		link: "/",
-	},
-	{
-		title: "Game",
-		link: "/",
+		title: "Marketplace",
+		link: "/marketplace",
 	},
 ];
 
