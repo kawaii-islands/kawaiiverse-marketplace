@@ -1,55 +1,18 @@
-import { Box } from "@mui/system";
-import NFTCard from "src/components/common/NFTCard";
-import { Grid, Pagination } from "@mui/material";
-import styles from "./index.module.scss";
-import cn from "classnames/bind";
-
-const cx = cn.bind(styles);
+import { useState, useEffect } from "react";
+import { useQuery } from "react-query";
+import { getListNFT } from "src/lib/api";
+import ListNFT from "src/components/common/ListNFT";
+import getItemsPerPage from "src/utils/getItemsPerPage";
+import { useMemo } from "react";
 
 export default function List() {
-	return (
-		<>
-			<Box display="flex" justifyContent="center" flexWrap="wrap">
-				<Grid container spacing={2} justifyContent="center">
-					<Grid item>
-						<NFTCard />
-					</Grid>
-					<Grid item>
-						<NFTCard />
-					</Grid>
-					<Grid item>
-						<NFTCard />
-					</Grid>
-					<Grid item>
-						<NFTCard />
-					</Grid>
-					<Grid item>
-						<NFTCard />
-					</Grid>
-					<Grid item>
-						<NFTCard />
-					</Grid>
-					<Grid item>
-						<NFTCard />
-					</Grid>
-					<Grid item>
-						<NFTCard />
-					</Grid>
-					<Grid item>
-						<NFTCard />
-					</Grid>
-					<Grid item>
-						<NFTCard />
-					</Grid>
-					<Grid item>
-						<NFTCard />
-					</Grid>
-					<Grid item>
-						<NFTCard />
-					</Grid>
-				</Grid>
-			</Box>
-			<Pagination count={10} color="primary" shape="rounded" className={cx("pagination")} />
-		</>
-	);
+	const limit = useMemo(() => getItemsPerPage(window.innerWidth), [window.innerWidth]);
+	const query = {
+		limit,
+	};
+	const { isLoading, error, data } = useQuery("getListNFT", () => getListNFT(query));
+
+	if (isLoading) return <></>;
+	if (error) return <></>;
+	if (data) return <ListNFT items={data?.data || []} totalItems={Math.ceil(data?.option?.totalItem / limit) || 0} />;
 }

@@ -15,6 +15,8 @@ import { useState } from "react";
 import GameAvatar from "src/assets/images/game.png";
 import styles from "./index.module.scss";
 import cn from "classnames/bind";
+import { useDispatch, useSelector } from "react-redux";
+import { setFilter } from "src/lib/redux/slices/filter";
 
 const cx = cn.bind(styles);
 
@@ -32,7 +34,27 @@ const names = [
 ];
 
 export default function Toolbar() {
+	const dispatch = useDispatch();
+	const games = useSelector(state => state?.games);
+	const activeGames = useSelector(state => state?.filter?.games) || [];
 	const [sort, setSort] = useState("Oliver Hansen");
+
+	const onDelete = address => {
+		dispatch(
+			setFilter({
+				games: activeGames.filter(i => i !== address),
+			})
+		);
+	};
+
+	const onClear = () => {
+		dispatch(
+			setFilter({
+				games: [],
+			})
+		);
+	};
+
 	return (
 		<>
 			<Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
@@ -68,62 +90,25 @@ export default function Toolbar() {
 				</FormControl>
 			</Box>
 			<Box display="flex" alignItems="center" marginBottom="30px" flexWrap="wrap">
-				<Chip
-					className={cx("tag")}
-					variant="outlined"
-					onDelete={() => {}}
-					label={
-						<Typography variant="body2" className={cx("text")}>
-							Kawaii Islands
-						</Typography>
-					}
-					avatar={<Avatar src={GameAvatar} className={cx("avatar")} />}
-				/>
-				<Chip
-					className={cx("tag")}
-					variant="outlined"
-					onDelete={() => {}}
-					label={
-						<Typography variant="body2" className={cx("text")}>
-							Kawaii Islands
-						</Typography>
-					}
-					avatar={<Avatar src={GameAvatar} className={cx("avatar")} />}
-				/>
-				<Chip
-					className={cx("tag")}
-					variant="outlined"
-					onDelete={() => {}}
-					label={
-						<Typography variant="body2" className={cx("text")}>
-							Kawaii Islands
-						</Typography>
-					}
-					avatar={<Avatar src={GameAvatar} className={cx("avatar")} />}
-				/>
-				<Chip
-					className={cx("tag")}
-					variant="outlined"
-					onDelete={() => {}}
-					label={
-						<Typography variant="body2" className={cx("text")}>
-							Kawaii Islands
-						</Typography>
-					}
-					avatar={<Avatar src={GameAvatar} className={cx("avatar")} />}
-				/>
-				<Chip
-					className={cx("tag")}
-					variant="outlined"
-					onDelete={() => {}}
-					label={
-						<Typography variant="body2" className={cx("text")}>
-							Kawaii Islands
-						</Typography>
-					}
-					avatar={<Avatar src={GameAvatar} className={cx("avatar")} />}
-				/>
-				<Button className={cx("clear")}>CLEAR ALL</Button>
+				{activeGames.map(address => (
+					<Chip
+						key={address}
+						className={cx("tag")}
+						variant="outlined"
+						onDelete={() => onDelete(address)}
+						label={
+							<Typography variant="body2" className={cx("text")}>
+								{games.filter(game => game.address === address)[0].name}
+							</Typography>
+						}
+						avatar={<Avatar src={GameAvatar} className={cx("avatar")} />}
+					/>
+				))}
+				{activeGames.length > 0 && (
+					<Button className={cx("clear")} onClick={onClear}>
+						CLEAR ALL
+					</Button>
+				)}
 			</Box>
 		</>
 	);

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const links = [
 	{
 		title: "Marketplace",
-		link: "/marketplace",
+		link: "/",
 	},
 ];
 
