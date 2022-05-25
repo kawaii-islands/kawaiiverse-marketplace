@@ -18,7 +18,7 @@ function getLibrary(provider) {
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-	<React.StrictMode>
+	// <React.StrictMode>
 		<QueryClientProvider client={queryClient}>
 			<Web3ReactProvider getLibrary={getLibrary}>
 				<BrowserRouter>
@@ -26,7 +26,7 @@ root.render(
 				</BrowserRouter>
 			</Web3ReactProvider>
 		</QueryClientProvider>
-	</React.StrictMode>
+	// </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

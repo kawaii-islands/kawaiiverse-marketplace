@@ -10,6 +10,6 @@ export const getListNFT = async (query = {}, filters = {}) => {
 
 export const getNFT = async (contract, id) => {
 	const res = await axios.get(`${ENDPOINT}/v1/nft/${contract}/${id}`);
-	if (res.data.status === 1) return res.data;
+	if (res.data.status === 1) return res.data.data;
 	throw new Error(res.data.message);
 };

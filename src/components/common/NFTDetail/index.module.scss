@@ -1,0 +1,263 @@
+.nft-detail {
+	display: flex;
+	justify-content: space-between;
+	max-width: 1200px;
+	margin: 0 auto;
+
+	// background: #FDECD9 !important;
+	@media (max-width: 1200px) {
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.left-container {
+		margin-bottom: 20px;
+		.left-img {
+			background: #fdecd9;
+			box-shadow: -10px -10px 20px rgba(255, 255, 255, 0.5), 10px 10px 20px rgba(139, 74, 2, 0.25);
+			border-radius: 25px;
+			width: 400px;
+			height: 400px;
+			padding: 60px;
+			position: relative;
+			margin-bottom: 20px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			@media (max-width: 1200px) {
+				width: 570px;
+				height: 570px;
+			}
+			@media (max-width: 600px) {
+				width: calc(100vw - 60px);
+				height: calc(100vw - 60px);
+			}
+
+			img {
+				max-width: 100%;
+				max-height: 240px;
+			}
+
+			.balance {
+				position: absolute;
+				z-index: 2;
+				font-weight: bold;
+				font-size: 16px;
+				color: #833f1d;
+				width: 36px;
+				height: 36px;
+				border: 1px solid #a86c60;
+				box-sizing: border-box;
+				border-radius: 6px;
+				right: 20px;
+				bottom: 20px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+		}
+
+		.link {
+			font-size: 16px;
+			color: #a86c60;
+			font-weight: bold;
+			display: flex;
+			align-items: center;
+
+			img {
+				margin-right: 10px;
+			}
+		}
+	}
+
+	.right {
+		width: 700px;
+
+		@media (max-width: 1200px) {
+			width: 100%;
+			max-width: 540px;
+		}
+
+		.feature {
+			width: 100%;
+			display: flex;
+			margin-bottom: 20px;
+
+			.tag {
+				background: #d2b0a3;
+				box-shadow: 0px 0px 12px #e5c1b3;
+				border-radius: 4px;
+				padding: 5px 7px;
+				color: white;
+			}
+
+			.image {
+				height: 32px;
+				padding: 4px;
+				background: #d2b0a3;
+				margin-left: 12px;
+				border-radius: 4px;
+
+				img {
+					height: 100%;
+				}
+			}
+
+			.origin {
+				height: 32px;
+				margin-left: 12px;
+			}
+		}
+
+		.name {
+			margin-bottom: 12px;
+		}
+
+		.id {
+			font-weight: 600;
+			margin-bottom: 15px;
+      opacity: 0.8;
+		}
+
+		.colors {
+			display: flex;
+			flex-wrap: wrap;
+			margin-bottom: 15px;
+			.item {
+				display: flex;
+				flex-direction: column;
+				justify-content: flex-start;
+				align-items: center;
+				background-color: #ffe3c4;
+				border-radius: 10px;
+				margin-right: 10px;
+				position: relative;
+				z-index: 1;
+				margin-bottom: 5px;
+				width: 40px;
+				img {
+					box-sizing: content-box;
+					width: 100%;
+				}
+			}
+		}
+
+		.divider {
+			width: 100%;
+			height: 1px;
+			background: #944850;
+			margin-bottom: 15px;
+		}
+
+		.label {
+			font-weight: bold;
+			font-size: 18px;
+			color: #833f1d;
+			margin-bottom: 15px;
+		}
+
+		.price {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			background: #fdf5e8;
+			border-radius: 6px;
+			padding: 14px 13px;
+			margin-bottom: 30px;
+
+			@media (max-width: 600px) {
+				flex-direction: column;
+				align-items: flex-start;
+			}
+
+			&-left {
+				display: flex;
+				align-items: center;
+
+				@media (max-width: 600px) {
+					margin-bottom: 10px;
+				}
+
+				img {
+					width: 28px;
+					height: 28px;
+					margin-right: 8px;
+				}
+
+				.amount {
+					font-weight: bold;
+					font-size: 24px;
+					color: #833f1d;
+					margin-right: 8px;
+				}
+
+				.dollar {
+					font-weight: 600;
+					font-size: 20px;
+					color: #91a7d1;
+				}
+			}
+
+			&-owner {
+				font-weight: 600;
+				font-size: 16px;
+				color: #833f1d;
+				margin-bottom: 15px;
+        opacity: 0.8;
+
+				a {
+					color: #833f1d;
+					text-decoration: none;
+
+					&:hover {
+						text-decoration: underline;
+					}
+				}
+			}
+
+			&-right {
+				display: flex;
+				align-items: flex-end;
+				flex-direction: column;
+				@media (max-width: 768px) {
+					align-items: flex-start;
+				}
+
+				.button {
+          margin-bottom: 0;
+					@media (max-width: 600px) {
+						margin-top: 10px;
+					}
+				}
+
+				.sold {
+					border-radius: 6px;
+					text-align: center;
+					padding: 10px;
+					font-weight: 600;
+					font-size: 16px;
+					color: #ff7600;
+					width: 110px;
+					height: 44px;
+					border: 1px solid #ff7600;
+
+					@media (max-width: 600px) {
+						margin-top: 10px;
+					}
+				}
+
+				.unavailable {
+					font-size: 12px;
+					color: #cb8b91;
+					margin-top: 5px;
+				}
+			}
+		}
+	}
+}
+
+.button {
+	color: #ffffff;
+	margin-bottom: 15px;
+}

@@ -1,0 +1,50 @@
+.relation {
+    .label {
+        font-weight: bold;
+        font-size: 18px;
+        color: #833f1d;
+        margin-bottom: 15px;
+    }
+
+    .output {
+        display: flex;
+        flex-flow: row wrap;
+        background: #fdf5e8;
+        border-radius: 4px;
+        margin-bottom: 30px;
+        padding: 20px;
+
+        &-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            width: 25%;
+            @media (max-width: 1200px) {
+                width: 33.33%;
+            }
+            @media (max-width: 600px) {
+                width: 50%;
+            }
+            @media (max-width: 400px) {
+                width: 100%;
+            }
+            img {
+                width: 32px;
+                height: 32px;
+                margin-right: 8px;
+            }
+            font-weight: 600;
+            font-size: 16px;
+            color: #833f1d;
+        }
+    }
+    .story {
+        padding: 20px;
+        font-weight: normal;
+        font-size: 14px;
+        color: #833f1d;
+        background: #fdf5e8;
+        border-radius: 4px;
+        line-height: 1.5;
+    }
+}

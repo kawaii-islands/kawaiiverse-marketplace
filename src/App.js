@@ -11,10 +11,21 @@ import { Provider, useDispatch } from "react-redux";
 import store from "src/lib/redux/store";
 import { setKwtPrice } from "./lib/redux/slices/price";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import LoadingPage from "./components/common/LoadingPage";
+
+const lazyMinLoadTime = (factory, minLoadTimeMs = 2000) =>
+	React.lazy(() =>
+		Promise.all([factory(), new Promise(resolve => setTimeout(resolve, minLoadTimeMs))]).then(
+			([moduleExports]) => moduleExports
+		)
+	);
 
 const persistor = persistStore(store);
-const Marketplace = React.lazy(() => import("src/pages/Marketplace"));
+const Marketplace = lazyMinLoadTime(() => import("src/pages/Marketplace"));
 const Profile = React.lazy(() => import("src/pages/Profile"));
+const Auction = React.lazy(() => import("src/pages/Auction"));
 
 const UpdatePrice = () => {
 	const dispatch = useDispatch();
@@ -45,13 +56,15 @@ export default function App() {
 						<UpdatePrice />
 						<Header />
 						<div className="app-layout">
-							<Suspense fallback="loading">
+							<Suspense fallback={<LoadingPage />}>
 								<Routes>
 									<Route path="/" element={<Marketplace />} />
 									<Route path="profile/:tab" element={<Profile />} />
+									<Route path="auction/:index" element={<Auction />} />
 								</Routes>
 							</Suspense>
 						</div>
+						<ToastContainer />
 					</StyledEngineProvider>
 				</ThemeProvider>
 			</PersistGate>

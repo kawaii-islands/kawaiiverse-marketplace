@@ -4,6 +4,7 @@ const theme = createTheme({
 	palette: {
 		primary: { main: "#F25858" },
 		secondary: { main: "#944850" },
+		warning: { main: "#FF7500" },
 	},
 	components: {
 		MuiAppBar: {
@@ -23,6 +24,7 @@ const theme = createTheme({
 					textTransform: "unset",
 					fontSize: 16,
 					fontWeight: 700,
+					minWidth: 110,
 				},
 			},
 		},
@@ -35,6 +37,10 @@ const theme = createTheme({
 				},
 				h5: {
 					fontSize: "24px",
+					fontWeight: 700,
+				},
+				h4: {
+					fontSize: "28px",
 					fontWeight: 700,
 				},
 				body1: {
