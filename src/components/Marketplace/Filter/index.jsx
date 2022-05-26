@@ -4,18 +4,18 @@ import SearchIcon from "@mui/icons-material/Search";
 import Game from "./Game";
 import styles from "./index.module.scss";
 import cn from "classnames/bind";
-import { getListGame } from "src/lib/web3";
-import { useQuery } from "react-query";
+import { getListGame, getNumberOfGame } from "src/lib/web3";
 import { useDispatch, useSelector } from "react-redux";
 import { setGames } from "src/lib/redux/slices/game";
+import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import useGetListGame from "src/utils/hooks/useGetListGame";
 
 const cx = cn.bind(styles);
 
 export default function Filter() {
-	const dispatch = useDispatch();
 	const activeGames = useSelector(state => state?.filter?.games) || [];
-	const { error, isLoading, data } = useQuery("getListGame", getListGame);
-	if (data) dispatch(setGames(data));
+	const listGame = useGetListGame();
 
 	return (
 		<div className={cx("container")}>
@@ -34,7 +34,8 @@ export default function Filter() {
 				}
 				placeholder="Search game"
 			/>
-			{data && data.map(game => <Game key={game.address} game={game} active={activeGames.includes(game.address)} />)}
+			{listGame &&
+				listGame.map(game => <Game key={game.address} game={game} active={activeGames.includes(game.address)} />)}
 		</div>
 	);
 }

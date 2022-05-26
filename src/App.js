@@ -10,10 +10,14 @@ import { persistStore } from "redux-persist";
 import { Provider, useDispatch } from "react-redux";
 import store from "src/lib/redux/store";
 import { setKwtPrice } from "./lib/redux/slices/price";
+import { setKwtBalance } from "./lib/redux/slices/balance";
+import { getKwtBalance } from "./lib/web3";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingPage from "./components/common/LoadingPage";
+import Web3 from "web3";
+import { useWeb3React } from "@web3-react/core";
 
 const lazyMinLoadTime = (factory, minLoadTimeMs = 2000) =>
 	React.lazy(() =>
@@ -24,8 +28,8 @@ const lazyMinLoadTime = (factory, minLoadTimeMs = 2000) =>
 
 const persistor = persistStore(store);
 const Marketplace = lazyMinLoadTime(() => import("src/pages/Marketplace"));
-const Profile = React.lazy(() => import("src/pages/Profile"));
-const Auction = React.lazy(() => import("src/pages/Auction"));
+const Profile = lazyMinLoadTime(() => import("src/pages/Profile"));
+const Auction = lazyMinLoadTime(() => import("src/pages/Auction"));
 
 const UpdatePrice = () => {
 	const dispatch = useDispatch();
@@ -47,6 +51,29 @@ const UpdatePrice = () => {
 	return null;
 };
 
+const UpdateBalance = () => {
+	const { account } = useWeb3React();
+	const dispatch = useDispatch();
+	const updateBalance = async () => {
+		try {
+			const [kwtData] = await Promise.all([getKwtBalance(account)]);
+			dispatch(setKwtBalance(Web3.utils.fromWei(kwtData)));
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	useEffect(() => {
+		if (account) {
+			updateBalance();
+			const interval = setInterval(updateBalance, 1000 * 60);
+			return clearInterval(interval);
+		}
+	}, [account]);
+
+	return null;
+};
+
 export default function App() {
 	return (
 		<Provider store={store}>
@@ -54,6 +81,7 @@ export default function App() {
 				<ThemeProvider theme={theme}>
 					<StyledEngineProvider injectFirst>
 						<UpdatePrice />
+						<UpdateBalance />
 						<Header />
 						<div className="app-layout">
 							<Suspense fallback={<LoadingPage />}>

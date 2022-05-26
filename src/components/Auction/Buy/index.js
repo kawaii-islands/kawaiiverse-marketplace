@@ -9,15 +9,83 @@ import { getCurrentPriceOnChain } from "src/utils/getCurrentPrice";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import formatNumber from "src/utils/formatNumber";
+import { useWeb3React } from "@web3-react/core";
+import { toast } from "react-toastify";
+import addresses from "src/constants/addresses";
+import MARKETPLACE_ABI from "src/abi/marketplace.json";
+import ERC20_ABI from "src/abi/erc20.json";
+import web3 from "web3";
+import { BSC_CHAIN_ID } from "src/constants/network";
+import { createNetworkOrSwitch, read, write } from "src/lib/web3";
 
 const cx = cn.bind(styles);
 
-export default function BuyModal({ show, setShow, auction, info }) {
+export default function BuyModal({ show, setShow, auction, info, index }) {
+	const { account, chainId, library } = useWeb3React();
 	const { kwtPrice } = useSelector(state => state?.price);
+	const balance = useSelector(state => state?.balance?.kwtBalance);
 	const currentPrice = useMemo(() => getCurrentPriceOnChain(auction), [auction]);
-	const [amount, setAmount] = useState(currentPrice);
+	const [price, setPrice] = useState(currentPrice);
 
-	const buy = async () => {};
+	const buy = async () => {
+		try {
+			if (!price || price < 0) {
+				return toast.error("Invalid amount");
+			}
+			if (Number(price) < Number(currentPrice)) {
+				return toast.error("Amount must be greater than current price");
+			}
+			if (price > balance) {
+				return toast.error(`Not enough KWT`);
+			}
+
+			if (chainId !== BSC_CHAIN_ID) {
+				const error = await createNetworkOrSwitch(library.provider);
+				if (error) {
+					throw new Error("Please change network to Binance smart chain");
+				}
+			}
+
+			const allowance = await getAllowance();
+			if (Number(allowance) < price * 10 ** 18) {
+				await approve();
+			}
+			// const callback = hash => {
+			// 	setHash(hash);
+			// };
+
+			await write(
+				"bid",
+				library.provider,
+				addresses.MARKETPLACE,
+				MARKETPLACE_ABI,
+				[index, web3.utils.toWei(price.toString(), "ether")],
+				{
+					from: account,
+				},
+				// callback
+			);
+		} catch (error) {
+			console.log(error);
+			toast.error(error.message || "An error occurred!");
+		} finally {
+		}
+	};
+
+	const getAllowance = async () => {
+		return read("allowance", BSC_CHAIN_ID, addresses.KAWAII_TOKEN, ERC20_ABI, [account, addresses.MARKETPLACE]);
+	};
+
+	const approve = async () => {
+		return await write(
+			"approve",
+			library.provider,
+			addresses.KAWAII_TOKEN,
+			ERC20_ABI,
+			[addresses.MARKETPLACE, web3.utils.toWei("999999999999999", "ether")],
+			{ from: account }
+		);
+	};
 
 	return (
 		<Modal
@@ -70,12 +138,12 @@ export default function BuyModal({ show, setShow, auction, info }) {
 						<div className={cx("row")}>
 							<OutlinedInput
 								className={cx("input")}
-								value={amount}
+								value={price}
 								type="number"
 								inputProps={{
 									min: 0,
 								}}
-								onChange={e => setAmount(e.target.value)}
+								onChange={e => setPrice(e.target.value)}
 								endAdornment={
 									<InputAdornment position="end">
 										<Box className={cx("adorment")}>
@@ -85,7 +153,7 @@ export default function BuyModal({ show, setShow, auction, info }) {
 								}
 							/>
 						</div>
-						<Button variant="contained" color="warning" className={cx("button")}>
+						<Button variant="contained" color="warning" className={cx("button")} onClick={buy}>
 							Buy
 						</Button>
 					</div>

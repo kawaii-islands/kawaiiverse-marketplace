@@ -5,6 +5,7 @@ import { BSC_CHAIN_ID_HEX, BSC_rpcUrls, BSC_blockExplorerUrls, BSC_CHAIN_ID } fr
 import FACTORY_ABI from "src/abi/factory.json";
 import NFT_1155_ABI from "src/abi/nft-1155.json";
 import addresses from "src/constants/addresses";
+import ERC20_ABI from "src/abi/erc20.json";
 
 export const createNetworkOrSwitch = async provider => {
 	if (!provider.isMetaMask) {
@@ -89,16 +90,24 @@ export const getNativeBalance = (address, chainId = BSC_CHAIN_ID) => {
 	return web3.eth.getBalance(address);
 };
 
+export const getKwtBalance = (address, chainId = BSC_CHAIN_ID) => {
+	return read("balanceOf", chainId, addresses.KAWAII_TOKEN, ERC20_ABI, [address]);
+};
+
 export const getCurrentBlock = () => {
 	const web3 = new Web3(RPC_URLS[BSC_CHAIN_ID]);
 	return web3.eth.getBlockNumber();
 };
 
-export const getListGame = async () => {
+export const getNumberOfGame = async () => {
 	const numberOfGame = +(await read("nft1155Length", BSC_CHAIN_ID, addresses.FACTORY, FACTORY_ABI, []));
+	return numberOfGame;
+};
+
+export const getListGame = async (from, numberOfGame) => {
 	const listPromise = Array(numberOfGame)
 		.fill()
-		.map((_, idx) => read("nft1155", BSC_CHAIN_ID, addresses.FACTORY, FACTORY_ABI, [idx]));
+		.map((_, idx) => read("nft1155", BSC_CHAIN_ID, addresses.FACTORY, FACTORY_ABI, [idx + from]));
 	const listGame = await Promise.all(listPromise);
 	const listName = await Promise.all(listGame.map(address => read("name", BSC_CHAIN_ID, address, NFT_1155_ABI, [])));
 	return listGame.map((address, idx) => ({

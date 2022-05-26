@@ -3,13 +3,11 @@ import React, { useEffect, useState } from "react";
 import styles from "./index.module.scss";
 import cn from "classnames/bind";
 import Progress from "./Progress";
-import web3 from "web3";
 import { Typography, Button } from "@mui/material";
 
 const cx = cn.bind(styles);
 
-const NFTDetail = ({ auction, info, sold, unavailable, onClick }) => {
-	const seller = "0x2621e8a764c4b463eB6f45Dc53845913cAD2a64F";
+const NFTDetail = ({ auction, info, sold, unavailable, onClick, isOwner }) => {
 	return (
 		<div className={cx("nft-detail")}>
 			<div className={cx("left-container")}>
@@ -40,9 +38,9 @@ const NFTDetail = ({ auction, info, sold, unavailable, onClick }) => {
 						</Typography>
 						<div className={cx("price-owner")}>
 							Owner:{" "}
-							<a href={`https://bscscan.com/address/${seller}`} target="_blank">
-								{seller.slice(0, 6)}...
-								{seller.slice(36)}
+							<a href={`https://bscscan.com/address/${auction.seller}`} target="_blank">
+								{auction.seller.slice(0, 6)}...
+								{auction.seller.slice(36)}
 							</a>
 						</div>
 					</>
@@ -67,12 +65,11 @@ const NFTDetail = ({ auction, info, sold, unavailable, onClick }) => {
 									</Button>
 									<div className={cx("unavailable")}>This auction is no longer available. Please try again later</div>
 								</>
+							) : isOwner ? (
+								<Button variant="contained" color="secondary" className={cx("button")} onClick={onClick}>
+									Cancel
+								</Button>
 							) : (
-								// : isOwner ? (
-								//   <Button variant="contained" color="secondary" className={cx("button")}>
-								// 	Cancel
-								// </Button>
-								// )
 								<Button variant="contained" color="warning" className={cx("button")} onClick={onClick}>
 									Buy
 								</Button>

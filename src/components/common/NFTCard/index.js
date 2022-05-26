@@ -18,9 +18,7 @@ export default function NFTCard({ item }) {
 	const amount = item?.amounts?.[0] || "";
 	const kwtPrice = useSelector(state => state.price?.kwtPrice);
 	const currentPrice = useMemo(() => getCurrentPriceFromBackend(item), [item]);
-	const { isLoading, error, data } = useQuery(`getNFT-${item.nft1155Address}-${id}`, () =>
-		getNFT(item.nft1155Address, id)
-	);
+	const { isLoading, error, data } = useQuery(`nft/${item.nft1155Address}/${id}`);
 	const navigate = useNavigate();
 
 	return (

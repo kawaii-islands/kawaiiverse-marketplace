@@ -1,1 +1,1 @@
-export default "https://kawaiiverse.kawaii.global";
+export default "https://kawaiiverse.kawaii.global/v1";

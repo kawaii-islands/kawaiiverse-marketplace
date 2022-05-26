@@ -7,8 +7,23 @@ import reportWebVitals from "./reportWebVitals";
 import { Web3ReactProvider } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import axios from "axios";
+import ENDPOINT from "src/constants/endpoint";
 
-const queryClient = new QueryClient();
+const defaultQueryFn = async ({ queryKey }) => {
+	const res = await axios.get(`${ENDPOINT}/${queryKey[0]}`);
+	if (res.data.status === 1) return res.data.data;
+	throw new Error(res.data.message);
+};
+
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			refetchOnWindowFocus: false,
+			queryFn: defaultQueryFn,
+		},
+	},
+});
 
 function getLibrary(provider) {
 	const library = new Web3Provider(provider);
@@ -19,13 +34,13 @@ function getLibrary(provider) {
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	// <React.StrictMode>
-		<QueryClientProvider client={queryClient}>
-			<Web3ReactProvider getLibrary={getLibrary}>
-				<BrowserRouter>
-					<App />
-				</BrowserRouter>
-			</Web3ReactProvider>
-		</QueryClientProvider>
+	<QueryClientProvider client={queryClient}>
+		<Web3ReactProvider getLibrary={getLibrary}>
+			<BrowserRouter>
+				<App />
+			</BrowserRouter>
+		</Web3ReactProvider>
+	</QueryClientProvider>
 	// </React.StrictMode>
 );
 
