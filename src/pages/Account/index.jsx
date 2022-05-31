@@ -4,10 +4,16 @@ import { read } from "src/lib/web3";
 import addresses from "src/constants/addresses";
 import { useQuery } from "react-query";
 import useGetListGame from "src/utils/hooks/useGetListGame";
+import List from "src/components/Marketplace/List";
+import NFTDisplay from "./NFTDisplay"
+import Profile from "./Profile";
 
 const cx = cn.bind(styles);
 
 export default function Account() {
 	const listGame = useGetListGame();
-	return <div className={cx("account")}></div>;
+	return <div className={cx("account")}>
+		<Profile/>
+		<NFTDisplay/>
+	</div>;
 }
