@@ -2,14 +2,18 @@
 import React, { useEffect, useRef } from "react";
 import styles from "./NFTCard2.module.scss";
 import cn from "classnames/bind";
+import { useNavigate } from "react-router-dom";
 
 const cx = cn.bind(styles);
 
 const NFTCard2 = ({ item }) => {
 	if (!item) return;
+	console.log(item);
 	const canvasRef = useRef(null);
+	const navigate = useNavigate();
+
 	return (
-		<div className={cx("nft-card")}>
+		<div className={cx("nft-card")} onClick={() => navigate(`/detail/${item.game.address}/${item.detail.tokenId}`)}>
 			<div className={cx("nft-card-container")}>
 				<div className={cx("nft-card-container-header")}>
 					<div className={cx("tag")}>#{item.detail.tokenId}</div>

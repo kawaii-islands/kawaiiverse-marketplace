@@ -2,7 +2,7 @@
 	border-radius: 8px;
 	padding: 10px;
 	max-width: 370px;
-	z-index: 9999;
+	z-index: 9999999999;
 
 	:global(.modal-content) {
 		width: 370px;
@@ -77,7 +77,7 @@
 				font-size: 18px;
 				line-height: 150%;
 				text-align: center;
-				color: #833F1D;
+				color: #833f1d;
 				// background: linear-gradient(135deg, #f2c314 0%, #fc3832 100%);
 				// -webkit-background-clip: text;
 				// -webkit-text-fill-color: transparent;
@@ -90,14 +90,14 @@
 				font-size: 16px;
 				line-height: 150%;
 				text-align: center;
-				color: #833F1D;
+				color: #833f1d;
 				margin-top: 5px;
 				margin-bottom: 10px;
 			}
 
 			.MuiButton-root {
 				text-transform: none !important;
-				background: #FF7500;
+				background: #ff7500;
 				border-radius: 4px;
 				color: white;
 				width: 70%;

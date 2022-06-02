@@ -45,6 +45,8 @@ const NFTDisplay = () => {
 	};
 
 	const getNftList = async () => {
+		if (!listGame) return;
+		console.log(listGame);
 		let listBuyNFT = await Promise.all(
 			listGame.map(async (game, index) => {
 				let totalNftByGame = await getTotalNftOfUser(game.address);
@@ -122,9 +124,7 @@ const NFTDisplay = () => {
 	} else {
 		contentComponent = (
 			<>
-				<div className={cx("grid")}>
-					<NFTList listNft={displayList} page={page} />
-				</div>
+				<NFTList listNft={displayList} page={page} />
 			</>
 		);
 	}

@@ -9,6 +9,6 @@ const NFTList = ({ listNft, page }) => {
 	useEffect(() => {
 		console.log(page);
 	}, [page]);
-	return <div className={cx("grid")}>{listNft && listNft.map((item, idx) => <NFTCard2 item={item} key={idx} />)}</div>;
+	return <>{listNft && listNft.map((item, idx) => <NFTCard2 item={item} key={idx} />)}</>;
 };
 export default NFTList;

@@ -30,6 +30,7 @@ const persistor = persistStore(store);
 const Marketplace = lazyMinLoadTime(() => import("src/pages/Marketplace"));
 const Profile = lazyMinLoadTime(() => import("src/pages/Profile"));
 const Auction = lazyMinLoadTime(() => import("src/pages/Auction"));
+const Detail = lazyMinLoadTime(() => import("src/pages/Detail"));
 
 const UpdatePrice = () => {
 	const dispatch = useDispatch();
@@ -89,6 +90,7 @@ export default function App() {
 									<Route path="/" element={<Marketplace />} />
 									<Route path="profile/:tab" element={<Profile />} />
 									<Route path="auction/:index" element={<Auction />} />
+									<Route path="detail/:contract/:index" element={<Detail />} />
 								</Routes>
 							</Suspense>
 						</div>
