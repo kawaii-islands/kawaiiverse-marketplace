@@ -6,7 +6,7 @@ import { useQuery } from "react-query";
 import useGetListGame from "src/utils/hooks/useGetListGame";
 import List from "src/components/Marketplace/List";
 import NFTDisplay from "./NFTDisplay"
-import Profile from "./Profile";
+import Profile from "src/components/Profile/Profile";
 
 const cx = cn.bind(styles);
 
