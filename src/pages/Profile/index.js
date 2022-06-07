@@ -3,6 +3,7 @@ import Sidebar from "src/components/Sidebar";
 import { useParams } from "react-router-dom";
 
 const Account = React.lazy(() => import("src/pages/Account"));
+const Onsale = React.lazy(() => import("src/pages/Onsale"));
 
 export default function Profile() {
 	const { tab } = useParams();
@@ -11,7 +12,7 @@ export default function Profile() {
 			case "account":
 				return <Account />;
 			default:
-				return <Account />;
+				return <Onsale />;
 		}
 	};
 	return (
