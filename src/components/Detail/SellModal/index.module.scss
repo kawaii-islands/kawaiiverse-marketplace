@@ -88,6 +88,39 @@
 					outline: none;
 				}
 			}
+
+			&-right-error {
+				font-family: "Play";
+				padding: 10px 8px;
+				border: 1px solid red;
+				border-radius: 6px;
+				background: #fffcf8;
+				width: 235px;
+				color: #833f1d;
+				font-weight: bold;
+				input {
+					width: 80%;
+					border-radius: 6px;
+					border: none;
+					background: #fffcf8;
+					color: #833f1d;
+					// padding: 4px 8px;
+					font-weight: bold;
+				}
+				input::-webkit-outer-spin-button,
+				input::-webkit-inner-spin-button {
+					-webkit-appearance: none;
+					margin: 0;
+				}
+
+				/* Firefox */
+				input[type="number"] {
+					-moz-appearance: textfield;
+				}
+				input:focus {
+					outline: none;
+				}
+			}
 		}
 		.row2 {
 			display: flex;
@@ -104,6 +137,11 @@
 			// .highlight {
 			// 	color: #fde0e3;
 			// }
+			&-error {
+				color: red;
+				font-size: 12px;
+				font-weight: 500;
+			}
 		}
 		.confirm-btn {
 			font-family: "Play";

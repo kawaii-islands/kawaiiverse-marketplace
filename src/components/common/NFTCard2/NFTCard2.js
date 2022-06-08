@@ -4,12 +4,14 @@ import styles from "./NFTCard2.module.scss";
 import cn from "classnames/bind";
 import { useNavigate } from "react-router-dom";
 import Web3 from "web3";
+import { selectPrice } from "src/lib/redux/slices/price";
+import { useSelector } from "react-redux";
 
 const cx = cn.bind(styles);
 
 const NFTCard2 = ({ item, type }) => {
 	if (!item) return;
-	// console.log(item);
+	const { kwtPrice } = useSelector(selectPrice);
 	const canvasRef = useRef(null);
 	const navigate = useNavigate();
 
@@ -61,8 +63,9 @@ const NFTCard2 = ({ item, type }) => {
 
 				{type === "onSale" && (
 					<div className={cx("price")}>
-						<div className={cx("amount")}>{itemSelling}</div>
-						<div className={cx("dollar")}>${itemPrice}</div>
+						<img src={require(`src/assets/icons/kwt.png`)} />
+						<div className={cx("amount")}>{itemPrice}</div>
+						<div className={cx("dollar")}>${(parseInt(itemPrice) * kwtPrice).toFixed(4)}</div>
 					</div>
 				)}
 				{type === undefined && (

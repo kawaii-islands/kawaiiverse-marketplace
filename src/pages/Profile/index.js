@@ -11,6 +11,7 @@ import { read } from "src/lib/web3";
 import { useWeb3React } from "@web3-react/core";
 import NFT_1155_ABI from "src/abi/nft-1155.json";
 import URL from "src/constants/endpoint";
+import { toast } from "react-toastify";
 
 const Account = React.lazy(() => import("src/pages/Account"));
 const Onsale = React.lazy(() => import("src/pages/Onsale"));
@@ -27,20 +28,25 @@ export default function Profile() {
 
 	const getData = async () => {
 		setLoading(true);
-		const auctionList = await getAuctionList();
-		let nftList = await getNftList();
+		try {
+			const auctionList = await getAuctionList();
+			let nftList = await getNftList();
 
-		nftList.map((nft, idx) => {
-			auctionList.map((auction, index) => {
-				if (nft.game.address == auction.erc1155 && nft.detail.tokenId == auction.erc1155TokenIds[0]) {
-					nftList[idx].selling = nftList[idx].selling + parseInt(auction.amounts[0]);
-				}
+			nftList.map((nft, idx) => {
+				auctionList.map((auction, index) => {
+					if (nft.game.address == auction.erc1155 && nft.detail.tokenId == auction.erc1155TokenIds[0]) {
+						nftList[idx].selling = nftList[idx].selling + parseInt(auction.amounts[0]);
+					}
+				});
 			});
-		});
-		nftList = nftList.reverse();
-		console.log(nftList);
-		setListNft(nftList);
-		setLoading(false);
+			nftList = nftList.reverse();
+			console.log(nftList);
+			setListNft(nftList);
+			setLoading(false);
+		} catch (error) {
+			console.log(error);
+			toast.error(error);
+		}
 	};
 
 	const getAuctionList = async () => {

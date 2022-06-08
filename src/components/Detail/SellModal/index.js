@@ -63,6 +63,7 @@ const SellModal = ({ show, setShow, auction, info, index, setSelling, setLoading
 			setStepLoading(2);
 		} catch (error) {
 			setStepLoading(-1);
+			toast.error(error);
 			console.log(error);
 		} finally {
 			setTimeout(() => {
