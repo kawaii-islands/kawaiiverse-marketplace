@@ -17,7 +17,6 @@ export default function Filter() {
 	const activeGames = useSelector(state => state?.filter?.games) || [];
 	const listGame = useGetListGame();
 	const [useGameList, setUseGameList] = useState(listGame);
-	console.log('listGame :>> ', listGame);
 
 	const handleSearch = value => {
 		let result = listGame.filter(game => game.name.toLowerCase().includes(value.toLowerCase()));

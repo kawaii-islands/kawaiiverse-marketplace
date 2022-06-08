@@ -17,8 +17,8 @@ export default function Marketplace() {
 	const query = {
 		limit,
 	};
-	const { isLoading, error, data } = useQuery("getListNFT", () => getListNFT(query));
-	console.log("data :>> ", data);
+	const { isLoading, error, data } = useQuery("getListNFT", () => getListNFT(limit));
+	console.log("data query :>> ", data);
 	const [listNft, setListNft] = useState();
 	const [originalList, setOriginalList] = useState([]);
 	const [loadingList, setLoadingList] = useState(true);
@@ -48,7 +48,6 @@ export default function Marketplace() {
 				let nftData = await getNFT(nft.nft1155Address, nft?.tokenIds1155?.[0]);
 
 				arr[id] = { ...nft, name: nftData.name, tokenId: nftData.tokenId, imageUrl: nftData.imageUrl };
-				console.log("nftData :>> ", arr[id]);
 			})
 		);
 		setListNft([...arr]);

@@ -12,7 +12,7 @@ export default function ListNFT({ items, totalItems }) {
 					</Grid>
 				))}
 			</Grid>
-			<Pagination count={totalItems} color="primary" shape="rounded" />
+			<Pagination count={totalItems} color="primary" shape="rounded" onChange={(e, page) => setCurrentPage(page)}/>
 		</>
 	);
 }
