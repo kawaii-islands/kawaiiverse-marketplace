@@ -6,14 +6,14 @@ import { useQuery } from "react-query";
 import useGetListGame from "src/utils/hooks/useGetListGame";
 import List from "src/components/Marketplace/List";
 import NFTDisplay from "./NFTDisplay"
-import Profile from "src/components/Profile/Profile";
+import ProfileInfo from "src/components/Profile/ProfileInfo";
 
 const cx = cn.bind(styles);
 
 export default function Account() {
 	const listGame = useGetListGame();
 	return <div className={cx("account")}>
-		<Profile/>
+		<ProfileInfo />
 		<NFTDisplay/>
 	</div>;
 }

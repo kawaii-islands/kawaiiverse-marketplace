@@ -11,8 +11,7 @@ import {
 	Button,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { useState } from "react";
-import GameAvatar from "src/assets/images/game.png";
+import { useEffect, useState } from "react";
 import styles from "./index.module.scss";
 import cn from "classnames/bind";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,96 +19,144 @@ import { setFilter } from "src/lib/redux/slices/filter";
 
 const cx = cn.bind(styles);
 
-const names = [
-	"Oliver Hansen",
-	"Van Henry",
-	"April Tucker",
-	"Ralph Hubbard",
-	"Omar Alexander",
-	"Carlos Abbott",
-	"Miriam Wagner",
-	"Bradley Wilkerson",
-	"Virginia Andrews",
-	"Kelly Snyder",
-];
+const names = ["Price: Low to High", "Price: High to Low", "Newest", "Oldest"];
 
-export default function Toolbar() {
+export default function Toolbar({ listNft, setListNft, originalList }) {
 	const dispatch = useDispatch();
-	const games = useSelector(state => state?.games);
-	const activeGames = useSelector(state => state?.filter?.games) || [];
-	const [sort, setSort] = useState("Oliver Hansen");
+	const [sort1, setSort] = useState(names[2]);
+	const activeGames = useSelector(state => state?.filter) || [];
+	const [searchValue, setSearchValue] = useState();
+
+	{console.log('activeGames :>> ', activeGames)}
 
 	const onDelete = address => {
-		dispatch(
-			setFilter({
-				games: activeGames.filter(i => i !== address),
-			})
-		);
+		let arr = activeGames.filter(item => item.address !== address);
+		dispatch(setFilter([...arr]));
 	};
 
-	const onClear = () => {
-		dispatch(
-			setFilter({
-				games: [],
-			})
-		);
+	const clearAll = () => {
+		dispatch(setFilter([]));
+	};
+
+	const handleSearch = value => {
+		let arr = [...originalList];
+		setSearchValue(value);
+
+		let result = arr.filter((nft, idx) => {
+			let condition1 = nft?.tokenId.toString().includes(value);
+			let condition2 = nft?.name.toUpperCase().includes(value.toUpperCase());
+
+			return condition1 || condition2;
+		});
+
+		setListNft([...result]);
+	};
+
+	const handleSort = sort => {
+		if (sort === sort1) {
+			setSort("");
+			setListNft(originalList);
+			if (search !== "") {
+				let listSearch = listNft.filter(nft => {
+					if (nft.name) {
+						return nft?.name.toUpperCase().includes(search.toUpperCase()) || nft?.tokenId.toString().includes(search);
+					}
+					return false;
+				});
+				setListSearch([...listSearch]);
+			}
+			return;
+		}
+
+		setSort(sort);
+		let newList = search !== "" ? [...listSearch] : [...listNft];
+
+		if (sort === 0) {
+			newList = newList.sort(function (a, b) {
+				return Number(a.price) - Number(b.price);
+			});
+		}
+
+		if (sort === 1) {
+			newList = newList.sort(function (a, b) {
+				return Number(b.price) - Number(a.price);
+			});
+		}
+
+		if (sort === 2) {
+			newList = [...originalList];
+		}
+
+		if (sort === 3) {
+			newList = [...originalList].reverse();
+		}
+
+		if (search !== "") {
+			setListSearch(newList);
+			return;
+		}
+		setListNft(newList);
 	};
 
 	return (
 		<>
-			<Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
+			<Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "12px" }}>
 				<Box sx={{ display: "flex", alignContent: "center" }}>
 					<Typography variant="h6" className={cx("total")}>
-						2000 Items
+						{listNft?.length} Items
 					</Typography>
-					<OutlinedInput
-						className={cx("search")}
-						variant="filled"
-						placeholder="Search for NFT"
-						endAdornment={
-							<InputAdornment position="start">
-								<SearchIcon />
-							</InputAdornment>
-						}
-					/>
 				</Box>
-				<FormControl>
+				<OutlinedInput
+					className={cx("search")}
+					variant="filled"
+					placeholder="Search for NFT"
+					endAdornment={
+						<InputAdornment position="start">
+							<SearchIcon />
+						</InputAdornment>
+					}
+					// value={searchValue}
+					onChange={e => handleSearch(e.target.value)}
+				/>
+				{/* <FormControl>
 					<Select
 						className={cx("sort")}
 						displayEmpty
 						input={<OutlinedInput />}
-						value={sort}
+						value={sort1}
 						onChange={e => setSort(e.target.value)}
 						size="small">
-						{names.map(name => (
-							<MenuItem key={name} value={name} className={cx("item")}>
+						{names.map((name, id) => (
+							<MenuItem key={name} value={name} className={cx("item")} onClick={() => handleSort(id)}>
 								{name}
 							</MenuItem>
 						))}
 					</Select>
-				</FormControl>
+				</FormControl> */}
 			</Box>
-			<Box display="flex" alignItems="center" marginBottom="30px" flexWrap="wrap">
-				{activeGames.map(address => (
-					<Chip
-						key={address}
-						className={cx("tag")}
-						variant="outlined"
-						onDelete={() => onDelete(address)}
-						label={
-							<Typography variant="body2" className={cx("text")}>
-								{games.filter(game => game.address === address)[0].name}
-							</Typography>
-						}
-						avatar={<Avatar src={GameAvatar} className={cx("avatar")} />}
-					/>
-				))}
-				{activeGames.length > 0 && (
-					<Button className={cx("clear")} onClick={onClear}>
+
+			{activeGames.length > 0 && (
+				<div className={cx("gameActive")}>
+					{activeGames.map((game, idx) => (
+						<Box display="flex" alignItems="center" flexWrap="wrap" key={idx}>
+							<Chip
+								className={cx("tag")}
+								variant="outlined"
+								onDelete={() => onDelete(game.address)}
+								label={
+									<Typography variant="body2" className={cx("text")}>
+										{game.name}
+									</Typography>
+								}
+								avatar={<Avatar src={game.logoUrl} className={cx("avatar")} />}
+							/>
+						</Box>
+					))}
+					<Button className={cx("clear")} onClick={clearAll}>
 						CLEAR ALL
 					</Button>
-				)}
-			</Box>
+				</div>
+			)}
 		</>
 	);
 }

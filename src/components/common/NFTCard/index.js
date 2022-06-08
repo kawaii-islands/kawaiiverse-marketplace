@@ -14,7 +14,6 @@ const cx = cn.bind(styles);
 
 export default function NFTCard({ item }) {
 	const id = item?.tokenIds1155?.[0] || "";
-	console.log(id);
 	const amount = item?.amounts?.[0] || "";
 	const kwtPrice = useSelector(state => state.price?.kwtPrice);
 	const currentPrice = useMemo(() => getCurrentPriceFromBackend(item), [item]);

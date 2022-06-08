@@ -1,4 +1,4 @@
-import styles from "./Profile.module.scss";
+import styles from "./ProfileInfo.module.scss";
 import cn from "classnames/bind";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Tooltip from "@mui/material/Tooltip";
@@ -11,7 +11,7 @@ import { Grid } from "@mui/material";
 
 const cx = cn.bind(styles);
 
-const Profile = () => {
+const ProfileInfo = () => {
 	const { account } = useWeb3React();
 	return (
 		<>
@@ -128,4 +128,4 @@ const Profile = () => {
 		</>
 	);
 };
-export default Profile;
+export default ProfileInfo;

@@ -5,7 +5,7 @@ import ListNFT from "src/components/common/ListNFT";
 import getItemsPerPage from "src/utils/getItemsPerPage";
 import { useMemo } from "react";
 
-export default function List() {
+export default function List({ listNft }) {
 	const limit = useMemo(() => getItemsPerPage(window.innerWidth), [window.innerWidth]);
 	const query = {
 		limit,
@@ -14,5 +14,8 @@ export default function List() {
 
 	if (isLoading) return <></>;
 	if (error) return <></>;
-	if (data) return <ListNFT items={data?.data || []} totalItems={Math.ceil(data?.option?.totalItem / limit) || 0} />;
+	if (listNft)
+		return (
+			<ListNFT items={listNft || []} totalItems={Math.ceil(listNft?.length / limit) || 0} />
+		);
 }

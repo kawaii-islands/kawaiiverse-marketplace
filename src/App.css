@@ -2,5 +2,6 @@
 .app-layout {
 	min-height: calc(100vh - 70px);
 	margin-top: 70px;
-	background-image: url("./assets/images/app-bg.png");
+	/* background-image: url("./assets/images/app-bg.png"); */
+	background: #FDECD9;
 }
