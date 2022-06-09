@@ -113,7 +113,7 @@ export default function Profile() {
 			case "account":
 				return <Account listNft={listNft} loading={loading} />;
 			case "sale":
-				return <SellBundle />;
+				return <SellBundle listNft={listNft} loading={loading} />;
 			default:
 				return <Onsale />;
 		}

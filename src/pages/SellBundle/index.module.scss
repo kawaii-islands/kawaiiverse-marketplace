@@ -4,10 +4,36 @@
 	height: calc(100vh - 70px);
 	overflow-y: auto;
 
-	.title {
-		font-weight: 700;
-		font-size: 20px;
-		line-height: 150%;
-		color: #833f1d;
+	.header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		.title {
+			font-weight: 700;
+			font-size: 20px;
+			line-height: 150%;
+			color: #833f1d;
+		}
+
+		.right {
+			display: flex;
+			align-items: center;
+
+			.btn {
+				background: #ff7500;
+				border-radius: 6px;
+				padding: 7px 38px;
+				color: #ffffff;
+				font-weight: 700;
+				font-size: 20px;
+				line-height: 150%;
+				margin-left: 20px;
+			}
+		}
+	}
+
+	.listNft {
+		margin-top: 25px;
 	}
 }
