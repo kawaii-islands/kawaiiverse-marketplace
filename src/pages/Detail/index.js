@@ -28,7 +28,6 @@ const Detail = () => {
 	const [hash, setHash] = useState();
 
 	useEffect(() => {
-		console.log(contract, index);
 		getNFTInfo(contract, index);
 	}, []);
 
@@ -37,7 +36,6 @@ const Detail = () => {
 			let info = await getNFT(contract, index);
 			const balance = await getBalanceOf(contract, index);
 			info = { ...info, balance: balance };
-			console.log(info);
 			setInfo(info);
 		} catch (error) {
 			toast.error(error?.message || "An error occurred");

@@ -17,7 +17,7 @@ export default function Marketplace() {
 	const query = {
 		limit,
 	};
-	const { isLoading, error, data } = useQuery("getListNFT", () => getListNFT(limit));
+	const { isLoading, error, data } = useQuery("getListNFT", () => getListNFT(10000000));
 	console.log("data query :>> ", data);
 	const [listNft, setListNft] = useState();
 	const [originalList, setOriginalList] = useState([]);
