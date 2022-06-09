@@ -20,15 +20,22 @@ import { createNetworkOrSwitch, read, write } from "src/lib/web3";
 
 const cx = cn.bind(styles);
 
-export default function BuyModal({ show, setShow, auction, info, index }) {
+export default function BuyModal({ show, setShow, auction, info, index, setBuying, setStepLoading, setHash }) {
 	const { account, chainId, library } = useWeb3React();
 	const { kwtPrice } = useSelector(state => state?.price);
 	const balance = useSelector(state => state?.balance?.kwtBalance);
 	const currentPrice = useMemo(() => getCurrentPriceOnChain(auction), [auction]);
 	const [price, setPrice] = useState(currentPrice);
 
+	const callback = hash => {
+		setHash(hash);
+		setStepLoading(1);
+	};
+
 	const buy = async () => {
 		try {
+			setBuying(true);
+			setShow(false);
 			if (!price || price < 0) {
 				return toast.error("Invalid amount");
 			}
@@ -50,9 +57,6 @@ export default function BuyModal({ show, setShow, auction, info, index }) {
 			if (Number(allowance) < price * 10 ** 18) {
 				await approve();
 			}
-			// const callback = hash => {
-			// 	setHash(hash);
-			// };
 
 			await write(
 				"bid",
@@ -63,12 +67,15 @@ export default function BuyModal({ show, setShow, auction, info, index }) {
 				{
 					from: account,
 				},
-				// callback
+				callback
 			);
+			setStepLoading(2);
 		} catch (error) {
+			setStepLoading(-1);
 			console.log(error);
 			toast.error(error.message || "An error occurred!");
 		} finally {
+			setBuying(false);
 		}
 	};
 
