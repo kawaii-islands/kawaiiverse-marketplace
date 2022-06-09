@@ -21,6 +21,7 @@ const NFTDisplay = () => {
 	const [saleList, setSaleList] = useState();
 	const [loading, setLoading] = useState(true);
 	const [page, setPage] = useState(1);
+	const [sellingLength, setSellingLength] = useState(0);
 	const [totalPage, setTotalPage] = useState(1);
 
 	useEffect(() => {
@@ -68,7 +69,7 @@ const NFTDisplay = () => {
 			})
 		);
 		setSaleList(newSellingList);
-		console.log(sellingListAll.length);
+		setSellingLength(sellingListAll.length);
 		setTotalPage(Math.ceil(sellingListAll.length / PAGE_SIZE));
 		setLoading(false);
 	};
@@ -97,7 +98,7 @@ const NFTDisplay = () => {
 
 	return (
 		<>
-			<div className={cx("title")}>On sale (0)</div>
+			<div className={cx("title")}>On sale ({sellingLength})</div>
 			<div className={cx("grid")}>{contentComponent}</div>
 			{paginationComponent}
 		</>

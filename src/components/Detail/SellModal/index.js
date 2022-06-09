@@ -29,6 +29,15 @@ const SellModal = ({ show, setShow, auction, info, index, setSelling, setLoading
 		setSelling(true);
 		console.log(inputData);
 		try {
+			setStepLoading(0);
+
+			if (chainId !== BSC_CHAIN_ID) {
+				const error = await createNetworkOrSwitch(library.provider);
+				if (error) {
+					throw new Error("Please change network to Binance smart chain.");
+				}
+			}
+
 			const isApproved = await isApprovedForAll();
 			console.log("isApproved : ", isApproved);
 
@@ -61,6 +70,9 @@ const SellModal = ({ show, setShow, auction, info, index, setSelling, setLoading
 				callback
 			);
 			setStepLoading(2);
+			setTimeout(() => {
+				navigate(`/profile/account`);
+			}, 1500);
 		} catch (error) {
 			setStepLoading(-1);
 			toast.error(error);

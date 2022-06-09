@@ -4,8 +4,6 @@ import Toolbar from "src/components/Marketplace/Toolbar";
 import List from "src/components/Marketplace/List";
 import { useQuery } from "react-query";
 import { getListNFT } from "src/lib/api";
-import ListNFT from "src/components/common/ListNFT";
-import getItemsPerPage from "src/utils/getItemsPerPage";
 import { useEffect, useMemo, useState } from "react";
 import ListSkeleton from "src/components/common/ListSkeleton/ListSkeleton";
 import { getNFT } from "src/lib/api";
@@ -13,15 +11,16 @@ import NoData from "src/components/common/NoData";
 import { useSelector } from "react-redux";
 
 export default function Marketplace() {
-	const limit = useMemo(() => getItemsPerPage(window.innerWidth), [window.innerWidth]);
-	const query = {
-		limit,
-	};
-	const { isLoading, error, data } = useQuery("getListNFT", () => getListNFT(10000000));
-	console.log("data query :>> ", data);
 	const [listNft, setListNft] = useState();
 	const [originalList, setOriginalList] = useState([]);
 	const [loadingList, setLoadingList] = useState(true);
+	const [currentPage, setCurrentPage] = useState(1);
+	const query = {
+		limit: 100000000
+	};
+	
+	const { isLoading, error, data } = useQuery("getListNFT", () => getListNFT(query));
+	const [totalItems, setTotalItems] = useState(0);
 	const activeGames = useSelector(state => state?.filter) || [];
 
 	useEffect(() => {
@@ -30,9 +29,12 @@ export default function Marketplace() {
 				activeGames.find(i => i.address.toLowerCase() === nft.nft1155Address.toLowerCase())
 			);
 			setListNft([...a]);
+			setTotalItems(a.length);
 		} else {
 			setListNft([...originalList]);
+			setTotalItems(originalList.length);
 		}
+		setCurrentPage(1);
 	}, [activeGames, originalList]);
 
 	useEffect(() => {
@@ -42,6 +44,8 @@ export default function Marketplace() {
 	const getFullNftData = async () => {
 		setLoadingList(true);
 		if (!data) return;
+		setTotalItems(data?.option.totalItem);
+		
 		let arr = [];
 		await Promise.all(
 			data?.data.map(async (nft, id) => {
@@ -74,7 +78,7 @@ export default function Marketplace() {
 					) : !listNft?.length ? (
 						<NoData />
 					) : (
-						<List listNft={listNft} />
+						<List listNft={listNft} totalItems={totalItems} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
 					)}
 				</div>
 			</Box>

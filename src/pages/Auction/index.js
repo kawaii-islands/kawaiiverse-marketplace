@@ -18,6 +18,7 @@ import web3 from "web3";
 import LoadingModal from "src/components/common/LoadingModal/LoadingModal";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
+import { useNavigate } from "react-router-dom";
 
 const cx = cn.bind(styles);
 const AUCTION_STATUS = ["AUCTION", "CLOSE", "CANCEL"];
@@ -35,6 +36,7 @@ export default function Auction() {
 	const [stepLoading, setStepLoading] = useState(0);
 	const [loadingTitle, setLoadingTitle] = useState("");
 	const { index } = useParams();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		getAuction();
@@ -77,6 +79,7 @@ export default function Auction() {
 
 	const cancelAuction = async () => {
 		try {
+			setStepLoading(0);
 			setCancelling(true);
 			if (chainId !== BSC_CHAIN_ID) {
 				const error = await createNetworkOrSwitch(library.provider);
@@ -95,6 +98,9 @@ export default function Auction() {
 				callback
 			);
 			setStepLoading(2);
+			setTimeout(() => {
+				navigate(`/profile/account`);
+			}, 1000);
 		} catch (error) {
 			setStepLoading(-1);
 			console.log(error);
