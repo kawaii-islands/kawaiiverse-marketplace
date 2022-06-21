@@ -15,6 +15,7 @@ const NFTDisplay = ({ listNft, loading }) => {
 
 	useEffect(() => {
 		if (!listNft) return;
+		console.log(listNft);
 		let newnftList = listNft.filter((_, index) => index >= (page - 1) * PAGE_SIZE && index <= page * PAGE_SIZE - 1);
 		setDisplayList(newnftList);
 		setTotalPage(Math.ceil(listNft.length / PAGE_SIZE));

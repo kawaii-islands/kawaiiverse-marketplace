@@ -35,8 +35,9 @@ export default function Profile() {
 
 			nftList.map((nft, idx) => {
 				auctionList.map((auction, index) => {
-					if (nft.game.address == auction.erc1155 && nft.detail.tokenId == auction.erc1155TokenIds[0]) {
-						nftList[idx].selling = nftList[idx].selling + parseInt(auction.amounts[0]);
+					if (nft.game.address == auction.erc1155) {
+						let index = auction.erc1155TokenIds.indexOf(nft.detail.tokenId.toString());
+						if (index != -1) nftList[idx].selling = nftList[idx].selling + parseInt(auction.amounts[index]);
 					}
 				});
 			});

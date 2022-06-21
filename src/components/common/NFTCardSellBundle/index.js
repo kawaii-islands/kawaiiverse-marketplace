@@ -14,13 +14,25 @@ import RemoveCircleOutlineRoundedIcon from "@mui/icons-material/RemoveCircleOutl
 
 const cx = cn.bind(styles);
 
-export default function NFTCardSellBundle({ item, setListSellBundle, sellNFTs, setSellNFTs }) {
+export default function NFTCardSellBundle({
+	item,
+	setListSellBundle,
+	sellNFTs,
+	setSellNFTs,
+	listSellingContract,
+	setListSellingContract,
+	updateInfo,
+	index,
+}) {
 	const id = item?.tokenIds1155?.[0] || "";
 	const amount = item?.amounts?.[0] || "";
 	const kwtPrice = useSelector(state => state.price?.kwtPrice);
 	const [input, setInput] = useState(sellNFTs?.[item.tokenId] || 0);
 
 	const handleInput = () => {};
+	const checkExist = (array, element) => {
+		return array.find(e => e === element);
+	};
 
 	return (
 		<div className={cx("card")}>
@@ -40,12 +52,20 @@ export default function NFTCardSellBundle({ item, setListSellBundle, sellNFTs, s
 				<RemoveCircleOutlineRoundedIcon
 					className={cx("icon")}
 					onClick={() => {
+						console.log(item);
+						updateInfo("contract", item?.game.address);
 						if (sellNFTs[item?.detail.tokenId]) {
 							setInput(sellNFTs[item?.detail.tokenId] - 1);
 							setSellNFTs(sellNFTs => ({
 								...sellNFTs,
 								[item?.detail.tokenId]: sellNFTs[item?.detail.tokenId] - 1,
 							}));
+							console.log(sellNFTs[item?.detail.tokenId]);
+							if (sellNFTs[item?.detail.tokenId] - 1 == 0) {
+								let tmpArray = [...listSellingContract];
+								tmpArray[index] = { ...tmpArray[index], isSell: 0 };
+								setListSellingContract(tmpArray);
+							}
 						}
 					}}
 				/>
@@ -58,6 +78,7 @@ export default function NFTCardSellBundle({ item, setListSellBundle, sellNFTs, s
 					// pattern="^[1-9][0-9]*$"
 					onChange={e => {
 						const { value } = e.target;
+						updateInfo("contract", item?.game.address);
 						if (
 							value === "" ||
 							(!isNaN(value) && Number.isInteger(Number(value)) && Number(value) >= 1 && Number(value) <= item?.balance)
@@ -67,13 +88,24 @@ export default function NFTCardSellBundle({ item, setListSellBundle, sellNFTs, s
 								...sellNFTs,
 								[item?.detail.tokenId]: Number(value),
 							}));
+							if (
+								!isNaN(value) &&
+								Number.isInteger(Number(value)) &&
+								Number(value) >= 1 &&
+								Number(value) <= item?.balance
+							) {
+								let tmpArray = [...listSellingContract];
+								tmpArray[index] = { ...tmpArray[index], isSell: 1 };
+								setListSellingContract(tmpArray);
+							}
 						}
 					}}
 				/>
-				
+
 				<AddCircleOutlineRoundedIcon
 					className={cx("icon")}
 					onClick={() => {
+						updateInfo("contract", item?.game.address);
 						if (!sellNFTs[item?.detail.tokenId]) {
 							setInput(1);
 							setSellNFTs(sellNFTs => ({
@@ -87,6 +119,9 @@ export default function NFTCardSellBundle({ item, setListSellBundle, sellNFTs, s
 								[item?.detail.tokenId]: sellNFTs[item?.detail.tokenId] + 1,
 							}));
 						}
+						let tmpArray = [...listSellingContract];
+						tmpArray[index] = { ...tmpArray[index], isSell: 1 };
+						setListSellingContract(tmpArray);
 					}}
 				/>
 			</div>

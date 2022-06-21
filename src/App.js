@@ -18,6 +18,7 @@ import "react-toastify/dist/ReactToastify.css";
 import LoadingPage from "./components/common/LoadingPage";
 import Web3 from "web3";
 import { useWeb3React } from "@web3-react/core";
+import DetailBundle from "./pages/DetailBundle";
 
 const lazyMinLoadTime = (factory, minLoadTimeMs = 2000) =>
 	React.lazy(() =>
@@ -91,6 +92,7 @@ export default function App() {
 									<Route path="profile/:tab" element={<Profile />} />
 									<Route path="auction/:index" element={<Auction />} />
 									<Route path="detail/:contract/:index" element={<Detail />} />
+									<Route path="detailBundle/:auction" element={<DetailBundle />} />
 								</Routes>
 							</Suspense>
 						</div>

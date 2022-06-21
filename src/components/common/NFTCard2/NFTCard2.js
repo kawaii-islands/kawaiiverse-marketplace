@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Web3 from "web3";
 import { selectPrice } from "src/lib/redux/slices/price";
 import { useSelector } from "react-redux";
+import { getCurrentPriceFromBackend } from "src/utils/getCurrentPrice";
 
 const cx = cn.bind(styles);
 
@@ -22,15 +23,17 @@ const NFTCard2 = ({ item, type }) => {
 	let itemImg;
 	let itemName;
 	let itemPrice;
+	let gameLogo;
 
 	if (type == "onSale") {
 		itemAddress = item.nft1155Address;
 		tokenId = item.tokenIds1155[0];
-		itemBalance = item.amounts;
-		itemSelling = item.amounts;
+		itemBalance = parseInt(0);
+		itemSelling = parseInt(item.amounts);
 		itemImg = item.imageUrl;
 		itemName = item.name;
-		itemPrice = Web3.utils.fromWei(item.startingPrice.toString());
+		itemPrice = getCurrentPriceFromBackend(item);
+		gameLogo = item.gameLogo;
 	} else {
 		itemAddress = item.game.address;
 		tokenId = item.detail.tokenId;
@@ -38,6 +41,7 @@ const NFTCard2 = ({ item, type }) => {
 		itemSelling = item.selling;
 		itemImg = item.detail.imageUrl;
 		itemName = item.detail.name;
+		gameLogo = item.game.logoUrl;
 	}
 
 	const handleClickCard = () => {
@@ -50,7 +54,7 @@ const NFTCard2 = ({ item, type }) => {
 			<div className={cx("nft-card-container")}>
 				<div className={cx("nft-card-container-header")}>
 					<div className={cx("tag")}>#{tokenId}</div>
-					<img src={"https://images.kawaii.global/kawaii-marketplace-image/origin-tag.png"} />
+					<img src={gameLogo} className={cx("logo")} />
 				</div>
 				<div className={cx("total")}>Total: {itemBalance + itemSelling}</div>
 				<div className={cx("image")}>

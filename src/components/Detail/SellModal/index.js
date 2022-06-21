@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 
 const cx = cn.bind(styles);
 
-const SellModal = ({ show, setShow, auction, info, index, setSelling, setLoadingTitle, setStepLoading, setHash }) => {
+const SellModal = ({ show, setShow, info, setSelling, setStepLoading, setHash, isBundle }) => {
 	if (!info) return;
 	const { account, chainId, library } = useWeb3React();
 	const navigate = useNavigate();
@@ -47,23 +47,37 @@ const SellModal = ({ show, setShow, auction, info, index, setSelling, setLoading
 				console.log("isApproved : ", await isApprovedForAll());
 			}
 
+			let aunction = [];
+			if (isBundle) {
+				aunction = [
+					info.contract,
+					"0x0000000000000000000000000000000000000000",
+					info.tokenId,
+					info.balance,
+					[],
+					web3.utils.toWei(inputData.start_price),
+					web3.utils.toWei(inputData.end_price),
+					inputData.duration,
+				];
+			} else {
+				aunction = [
+					info.contract,
+					"0x0000000000000000000000000000000000000000",
+					[info.tokenId.toString()],
+					[inputData.amount],
+					[],
+					web3.utils.toWei(inputData.start_price),
+					web3.utils.toWei(inputData.end_price),
+					inputData.duration,
+				];
+			}
+
 			const res = await write(
 				"createAuction",
 				library.provider,
 				addresses.MARKETPLACE,
 				MARKETPLACE_ABI,
-				[
-					[
-						info.contract,
-						"0x0000000000000000000000000000000000000000",
-						[info.tokenId.toString()],
-						[inputData.amount],
-						[],
-						web3.utils.toWei(inputData.start_price),
-						web3.utils.toWei(inputData.end_price),
-						inputData.duration,
-					],
-				],
+				[aunction],
 				{
 					from: account,
 				},
@@ -129,7 +143,7 @@ const SellModal = ({ show, setShow, auction, info, index, setSelling, setLoading
 						</div>
 					</div>
 					<div className={cx("tab-content")}>
-						{tab === 1 && <SingleSell handleClick={handleClick} info={info} />}
+						{tab === 1 && <SingleSell handleClick={handleClick} info={info} isBundle={isBundle} />}
 						{tab === 2 && <MultipleSell handleClick={handleClick} info={info} />}
 					</div>
 				</div>

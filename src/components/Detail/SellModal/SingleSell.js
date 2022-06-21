@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 
 const cx = cn.bind(styles);
 
-const SingleSell = ({ handleClick, info }) => {
+const SingleSell = ({ handleClick, info, isBundle }) => {
 	console.log(info);
 	const { register, handleSubmit } = useForm();
 	const [errorAmount, setErrorAmount] = useState(false);
@@ -94,7 +94,11 @@ const SingleSell = ({ handleClick, info }) => {
 				<div className={cx("row")}>
 					<span>Amount</span>
 					<div className={errorAmount ? cx("row-right-error") : cx("row-right")}>
-						<input type="number" {...register("amount")} onChange={e => checkAmount(e)} />
+						{isBundle ? (
+							<input type="number" readOnly />
+						) : (
+							<input type="number" {...register("amount")} onChange={e => checkAmount(e)} />
+						)}
 					</div>
 				</div>
 				<div className={cx("row2")}>{errorAmount && <div className={cx("row2-error")}>{errorAmountMessage}</div>}</div>

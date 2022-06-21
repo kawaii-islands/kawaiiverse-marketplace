@@ -1,6 +1,6 @@
 import styles from "./NFTDisplay.module.scss";
 import cn from "classnames/bind";
-import NFTCard from "src/components/common/NFTCard";
+import NFTCard from "src/components/common/BundleCard";
 import { useState, useEffect } from "react";
 import NFTCard2 from "src/components/common/NFTCard2/NFTCard2";
 import { BSC_CHAIN_ID } from "src/constants/network";
@@ -65,7 +65,14 @@ const NFTDisplay = () => {
 				const response = await axios.get(
 					`${URL}/nft/${sellingItem.nft1155Address.toLowerCase()}/${sellingItem.tokenIds1155[0]}`
 				);
-				return { ...sellingItem, name: response.data.data.name, imageUrl: response.data.data.imageUrl };
+
+				const gameLogo = await axios.get(`${URL}/game/logo?contract=` + sellingItem.nft1155Address.toLowerCase());
+				return {
+					...sellingItem,
+					name: response.data.data.name,
+					imageUrl: response.data.data.imageUrl,
+					gameLogo: gameLogo.data.data[0].logoUrl,
+				};
 			})
 		);
 		setSaleList(newSellingList);
