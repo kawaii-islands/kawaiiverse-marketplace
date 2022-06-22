@@ -27,7 +27,8 @@ export default function ConnectWalletButton() {
 				onClick={() => {
 					if (account) navigate("/profile/account");
 					else setShowConnectModal(true);
-				}}>
+				}}
+				style={{ background: "#F25858", color: "#FFFFFF" }}>
 				{account ? "My account" : "Connet wallet"}
 			</Button>
 			<ConnectWalletModal show={showConnectModal} setShow={setShowConnectModal} />
