@@ -14,7 +14,9 @@ import useGetListGame from "src/utils/hooks/useGetListGame";
 const cx = cn.bind(styles);
 
 export default function Filter() {
-	const activeGames = useSelector(state => state?.filter?.games) || [];
+	// const activeGames = useSelector(state => state?.filter?.games) || [];
+	const activeGames = useSelector(state => state?.filter) || [];
+	const activeGameAddress = activeGames.map((games) => {return games.address});
 	const listGame = useGetListGame();
 	const [useGameList, setUseGameList] = useState(listGame);
 
@@ -42,7 +44,7 @@ export default function Filter() {
 				onChange={e => handleSearch(e.target.value)}
 			/>
 			{useGameList &&
-				useGameList.map(game => <Game key={game.address} game={game} active={activeGames.includes(game.address)} />)}
+				useGameList.map(game => <Game key={game.address} game={game} active={activeGameAddress.includes(game.address)} />)}
 		</div>
 	);
 }
