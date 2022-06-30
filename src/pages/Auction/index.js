@@ -49,7 +49,6 @@ export default function Auction() {
 	const getAuction = async () => {
 		try {
 			const auction = await read("getAuction", BSC_CHAIN_ID, addresses.MARKETPLACE, MARKETPLACE_ABI, [index]);
-			console.log(auction);
 			if (auction.startedAt === "0") return toast.error("Auction not found");
 			setAuction(auction);
 			if (AUCTION_STATUS[auction.status] === "CLOSE") {
@@ -66,7 +65,6 @@ export default function Auction() {
 	const getNFTInfo = async (contract, id) => {
 		try {
 			const info = await getNFT(contract, id);
-			console.log(info);
 			setInfo(info);
 		} catch (error) {
 			toast.error(error?.message || "An error occurred");

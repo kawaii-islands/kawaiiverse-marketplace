@@ -52,7 +52,6 @@ export default function NFTCardSellBundle({
 				<RemoveCircleOutlineRoundedIcon
 					className={cx("icon")}
 					onClick={() => {
-						console.log(item);
 						updateInfo("contract", item?.game.address);
 						if (sellNFTs[item?.detail.tokenId]) {
 							setInput(sellNFTs[item?.detail.tokenId] - 1);
@@ -60,7 +59,6 @@ export default function NFTCardSellBundle({
 								...sellNFTs,
 								[item?.detail.tokenId]: sellNFTs[item?.detail.tokenId] - 1,
 							}));
-							console.log(sellNFTs[item?.detail.tokenId]);
 							if (sellNFTs[item?.detail.tokenId] - 1 == 0) {
 								let tmpArray = [...listSellingContract];
 								tmpArray[index] = { ...tmpArray[index], isSell: 0 };

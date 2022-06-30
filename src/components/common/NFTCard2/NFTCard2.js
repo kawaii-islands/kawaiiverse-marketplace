@@ -12,7 +12,6 @@ const cx = cn.bind(styles);
 
 const NFTCard2 = ({ item, type }) => {
 	if (!item) return;
-	console.log(item);
 	const { kwtPrice } = useSelector(selectPrice);
 	const canvasRef = useRef(null);
 	const navigate = useNavigate();

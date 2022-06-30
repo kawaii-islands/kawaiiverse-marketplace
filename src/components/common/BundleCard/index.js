@@ -37,16 +37,13 @@ const NFTCard = ({ auction, price }) => {
 			auction.tokenIds1155.map(async id => {
 				const res = await axios.get(`${URL}/nft/${auction.nft1155Address}/${id}`);
 				if (res.data.data) {
-					console.log(res.data.data.imageUrl);
 					return res.data.data;
 				}
 			})
 		).then(responses => {
-			console.log(responses);
 			setDataList(responses);
 		});
 	};
-	console.log(auction);
 
 	return (
 		<div className={cx("nft-card")}>

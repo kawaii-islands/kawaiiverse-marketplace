@@ -11,7 +11,6 @@ import { useSelector } from "react-redux";
 const cx = cn.bind(styles);
 
 const SingleSell = ({ handleClick, info, isBundle }) => {
-	console.log(info);
 	const { register, handleSubmit } = useForm();
 	const [errorAmount, setErrorAmount] = useState(false);
 	const [errorAmountMessage, setErrorAmountMessage] = useState("");
@@ -47,7 +46,6 @@ const SingleSell = ({ handleClick, info, isBundle }) => {
 	};
 
 	const checkAmount = e => {
-		console.log(e.target.value);
 		if (e.target.value === null || e.target.value === "") {
 			setErrorAmount(true);
 			setErrorAmountMessage("Please input");
@@ -66,7 +64,6 @@ const SingleSell = ({ handleClick, info, isBundle }) => {
 	};
 
 	const checkPrice = e => {
-		console.log(e.target.value);
 		let valid = true;
 		if (e.target.value === null || e.target.value === "") {
 			setErrorPrice(true);

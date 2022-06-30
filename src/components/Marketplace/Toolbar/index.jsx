@@ -27,8 +27,6 @@ export default function Toolbar({ listNft, setListNft, originalList, sort, setSo
 	const activeGames = useSelector(state => state?.filter) || [];
 	const [searchValue, setSearchValue] = useState();
 
-	{console.log('activeGames :>> ', activeGames)}
-
 	const onDelete = address => {
 		let arr = activeGames.filter(item => item.address !== address);
 		dispatch(setFilter([...arr]));

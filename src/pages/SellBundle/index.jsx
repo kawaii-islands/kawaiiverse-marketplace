@@ -24,9 +24,6 @@ const SellBundle = ({ listNft, loading }) => {
 	const [stepLoading, setStepLoading] = useState(0);
 	const [hash, setHash] = useState();
 	const [info, setInfo] = useState({contract: "", tokenId: [], balance: []})
-	// const [isSellingContract, setisSellingContract] = useState(new Array(len).fill(0));
-	// console.log("sellNFTs :>> ", sellNFTs);
-	// console.log("sellNFTs :>> ", listSellingContract);
 	const [show, setShow] = useState(false);
 	const { account } = useWeb3React();
 
@@ -83,8 +80,6 @@ const SellBundle = ({ listNft, loading }) => {
 						onClick={() => {
 							updateData();
 							setShow(true);
-							// updateInfo("contract", "0x123321");
-							// console.log(info);
 						}}>
 						Sell
 					</Button>

@@ -80,7 +80,6 @@ export default function Marketplace() {
 				}}>
 				<Toolbar listNft={listNft} setListNft={setListNft} originalList={originalList} sort={sort} setSort={setSort}/>
 				<div style={{ marginTop: "40px" }}>
-					{console.log(loadingList, isLoading, loadingList || isLoading)}
 					{loadingList || isLoading ? (
 						<div style={{ display: "flex", flexWrap: "wrap" }}>
 							<ListSkeleton />
