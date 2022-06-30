@@ -1,0 +1,103 @@
+.nft-image {
+	background: #fdf5e8;
+	border: 1px solid rgba(188, 97, 59, 0.25);
+	border-radius: 25px;
+	width: 100%;
+
+	.top {
+		position: relative;
+		padding: 20px 23px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		border-bottom: 1px solid rgba(188, 97, 59, 0.25);
+
+		.header {
+			display: flex;
+			align-items: center;
+			margin-bottom: 20px;
+			width: 100%;
+
+			.id {
+				background: #d2b0a3;
+				border-radius: 8px;
+				font-weight: 700;
+				font-size: 16px;
+				color: #ffffff;
+				margin-right: 20px;
+				height: 40px;
+				padding: 9px 16px;
+				width: fit-content;
+				text-align: center;
+			}
+
+			.category {
+				height: 40px;
+				margin-right: 20px;
+			}
+
+			.breed {
+				height: 40px;
+			}
+		}
+
+		.avatar {
+			max-width: 100%;
+			max-height: 282px;
+			margin-bottom: 20px;
+		}
+
+		.name {
+			font-weight: 700;
+			font-size: 18px;
+			color: #833f1d;
+			width: 100%;
+		}
+
+		.balance {
+			position: absolute;
+			padding: 8px 5px;
+			font-weight: 700;
+			font-size: 16px;
+			color: #833f1d;
+			right: 23px;
+			bottom: 20px;
+			border: 1px solid #833f1d;
+			box-sizing: border-box;
+			border-radius: 6px;
+			width: 40px;
+			height: 40px;
+			text-align: center;
+		}
+
+		.arrow {
+			width: 60px;
+			height: 60px;
+			border-radius: 50%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			position: absolute;
+			background: rgba(215, 198, 179, 0.3);
+			backdrop-filter: blur(12px);
+			color: #905332;
+			cursor: pointer;
+
+			&:global(.back) {
+				left: 0;
+				top: 50%;
+				transform: translate(-50%, -50%);
+				svg {
+					margin-left: 5px;
+				}
+			}
+			
+			&:global(.forward) {
+				right: 0;
+				top: 50%;
+				transform: translate(50%, -50%);
+			}
+		}
+	}
+}

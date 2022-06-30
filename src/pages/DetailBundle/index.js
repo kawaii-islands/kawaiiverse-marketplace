@@ -1,57 +1,77 @@
 import { useState, useEffect } from "react";
-import NFTDetail from "src/components/common/NFTDetail";
-import SellModal from "src/components/Detail/SellModal";
-import LoadingModal from "src/components/common/LoadingModal/LoadingModal";
 import { useWeb3React } from "@web3-react/core";
 import { useParams } from "react-router-dom";
 import styles from "./index.module.scss";
 import cn from "classnames/bind";
+import { Grid, Typography } from "@mui/material";
+import CarouselComponent from "./CarouselComponent";
+import NftInformation from "./NftInformation";
+import NftImage from "./NftImage";
+import URL from "src/constants/endpoint";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 const cx = cn.bind(styles);
+const PAGE_SIZE = 10;
 
 const DetailBundle = () => {
 	const { account } = useWeb3React();
-	const { auction } = useParams();
-	const [info, setInfo] = useState();
-	const [balance, setBalance] = useState();
-	const [show, setShow] = useState(false);
-	const [selling, setSelling] = useState();
-	const [loadingTitle, setLoadingTitle] = useState("");
-	const [stepLoading, setStepLoading] = useState(0);
-	const [hash, setHash] = useState();
+	const { gameAddress, auction } = useParams();
+	const [page, setPage] = useState(1);
+	const sellBundleList = useSelector(state => state.sellBundleList);
+	const [bundleInfo, setBundleInfo] = useState();
+	const [listNftInBundle, setListNftInBundle] = useState([]);
+	const [item, setItem] = useState(0);
 
-	const handleOnClick = () => {
-		setShow(true);
+	useEffect(() => {
+		console.log("sellBundleList :>> ", sellBundleList);
+		const nft = sellBundleList?.filter(item => item.auctionIndex.toString() === auction.toString())[0];
+		setBundleInfo(nft);
+	}, [auction, sellBundleList]);
+
+	useEffect(() => {
+		if (bundleInfo) {
+			getAllNftInfo();
+		}
+	}, [bundleInfo]);
+
+	const getAllNftInfo = async () => {
+		const list = await Promise.all(
+			bundleInfo.tokenIds1155.map(async (nftId, index) => {
+				const response = await axios.get(`${URL}/nft/${gameAddress.toLowerCase()}/${nftId}`);
+				const gameLogo = await axios.get(`${URL}/game/logo?contract=` + bundleInfo.nft1155Address.toLowerCase());
+
+				return {
+					...response,
+					gameLogo: gameLogo.data.data[0].logoUrl,
+				};
+			})
+		);
+
+		setListNftInBundle(list);
+		console.log("list :>> ", list);
+		return list;
 	};
 
 	return (
-		<div className={cx("detail")}>
-			<NFTDetail info={info} sell={true} onClick={handleOnClick} />
-			<SellModal
-				show={show}
-				setShow={setShow}
-				info={info}
-				setSelling={setSelling}
-				setLoadingTitle={setLoadingTitle}
-				setStepLoading={setStepLoading}
-				setHash={setHash}
-			/>
-			{selling && (
-				<LoadingModal
-					show={selling}
-					network={"BscScan"}
-					loading={true}
-					title={loadingTitle}
-					stepLoading={stepLoading}
-					onHide={() => {
-						setUploadGameLoading(false);
-						setHash(undefined);
-						setStepLoading(0);
-					}}
-					hash={hash}
-					hideParent={() => {}}
-				/>
-			)}
+		<div className={cx("bundle-detail")}>
+			{console.log("item :>> ", item)}
+			<div className={cx("container")}>
+				<Grid container spacing={8}>
+					<Grid item xs={5}>
+						<NftImage
+							bundleInfo={bundleInfo}
+							nftInfo={listNftInBundle[item]}
+							item={item}
+							setItem={setItem}
+							listNftInBundle={listNftInBundle}
+						/>
+					</Grid>
+					<Grid item xs={7}>
+						<NftInformation bundleInfo={bundleInfo} nftInfo={listNftInBundle[item]} />
+					</Grid>
+				</Grid>
+			</div>
 		</div>
 	);
 };

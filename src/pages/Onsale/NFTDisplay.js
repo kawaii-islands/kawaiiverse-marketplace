@@ -12,6 +12,8 @@ import URL from "src/constants/endpoint";
 import { useWeb3React } from "@web3-react/core";
 import NFTList from "./NFTList";
 import ListSkeleton from "src/components/common/ListSkeleton/ListSkeleton";
+import { setSellBundleList } from "src/lib/redux/slices/bundle";
+import { useDispatch } from "react-redux";
 
 const cx = cn.bind(styles);
 const PAGE_SIZE = 10;
@@ -23,6 +25,7 @@ const NFTDisplay = () => {
 	const [page, setPage] = useState(1);
 	const [sellingLength, setSellingLength] = useState(0);
 	const [totalPage, setTotalPage] = useState(1);
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		getAuctionList();
@@ -60,6 +63,8 @@ const NFTDisplay = () => {
 
 		const res = await axios.post(URL + "/marketplace", data, config);
 		let sellingList = res.data.data;
+		console.log("sellingList :>> ", sellingList);
+
 		const newSellingList = await Promise.all(
 			sellingList.map(async sellingItem => {
 				const response = await axios.get(
@@ -75,6 +80,8 @@ const NFTDisplay = () => {
 				};
 			})
 		);
+
+		dispatch(setSellBundleList(newSellingList));
 		setSaleList(newSellingList);
 		setSellingLength(sellingListAll.length);
 		setTotalPage(Math.ceil(sellingListAll.length / PAGE_SIZE));

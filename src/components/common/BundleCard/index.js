@@ -10,8 +10,6 @@ import axios from "axios";
 import URL from "src/constants/endpoint";
 import { useNavigate } from "react-router-dom";
 
-// import CanvasImage from "src/components/common/CanvasImage";
-
 const cx = cn.bind(styles);
 
 const NFTCard = ({ auction, price }) => {
@@ -37,7 +35,7 @@ const NFTCard = ({ auction, price }) => {
 			auction.tokenIds1155.map(async id => {
 				const res = await axios.get(`${URL}/nft/${auction.nft1155Address}/${id}`);
 				if (res.data.data) {
-					console.log(res.data.data.imageUrl);
+					// console.log(res.data.data.imageUrl);
 					return res.data.data;
 				}
 			})
@@ -46,11 +44,13 @@ const NFTCard = ({ auction, price }) => {
 			setDataList(responses);
 		});
 	};
-	console.log(auction);
+	// console.log(auction);
 
 	return (
 		<div className={cx("nft-card")}>
-			<div className={cx("nft-card-container")} onClick={() => navigate(`/detailBundle/${auction.auctionIndex}`)}>
+			<div
+				className={cx("nft-card-container")}
+				onClick={() => navigate(`/detailBundle/${auction.nft1155Address}/${auction.auctionIndex}`)}>
 				<div className={cx("nft-card-container-title")}>
 					<div>
 						<div className={cx("nft-card-container-title-name")}>Bundle #{auction.auctionIndex}</div>

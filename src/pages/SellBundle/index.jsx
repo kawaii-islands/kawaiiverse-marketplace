@@ -99,7 +99,6 @@ const SellBundle = ({ listNft, loading }) => {
 					<Grid container spacing={2} justifyContent="center">
 						{listNft.map((item, index) => (
 							<Grid item key={item.detail._id}>
-								{console.log(item)}
 								<NFTCardSellBundle
 									item={item}
 									setListSellBundle={setListSellBundle}

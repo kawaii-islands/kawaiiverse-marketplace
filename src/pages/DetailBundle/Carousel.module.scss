@@ -1,0 +1,38 @@
+.container {
+    width: 100%;
+
+    :global {
+        .react-multi-carousel-item--active {
+            width: 90px !important;
+            display: block;
+        }
+    }
+
+    .carousel-item {
+        padding: 15px 7px;
+		display: flex;
+
+        &-container {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(244, 232, 218, 0.6);
+            border-radius: 4px;
+            padding: 5px;
+            cursor: pointer;
+			margin-right: 8px;
+
+            &:global(.active) {
+                border: 1px solid #ff8329;
+            }
+
+            img {
+                max-width: 70px;
+                max-height: 70px;
+                pointer-events: none;
+            }
+        }
+    }
+}

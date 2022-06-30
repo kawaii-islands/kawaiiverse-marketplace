@@ -92,7 +92,7 @@ export default function App() {
 									<Route path="profile/:tab" element={<Profile />} />
 									<Route path="auction/:index" element={<Auction />} />
 									<Route path="detail/:contract/:index" element={<Detail />} />
-									<Route path="detailBundle/:auction" element={<DetailBundle />} />
+									<Route path="detailBundle/:gameAddress/:auction" element={<DetailBundle />} />
 								</Routes>
 							</Suspense>
 						</div>
