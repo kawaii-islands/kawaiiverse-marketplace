@@ -66,7 +66,6 @@ export default function Profile() {
 
 	const getNftList = async () => {
 		if (!listGame) return;
-		console.log(listGame);
 		let listBuyNFT = await Promise.all(
 			listGame.map(async (game, index) => {
 				let totalNftByGame = await getTotalNftOfUser(game.address);

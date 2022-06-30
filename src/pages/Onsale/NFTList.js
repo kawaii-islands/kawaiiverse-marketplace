@@ -4,9 +4,7 @@ import NFTCard from "src/components/common/BundleCard";
 import { useEffect } from "react";
 
 const NFTList = ({ listNft, page }) => {
-	useEffect(() => {
-		// console.log(listNft);
-	}, [page]);
+	useEffect(() => {}, [page]);
 	return (
 		<>
 			{listNft &&

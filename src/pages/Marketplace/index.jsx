@@ -3,25 +3,33 @@ import Filter from "src/components/Marketplace/Filter";
 import Toolbar from "src/components/Marketplace/Toolbar";
 import List from "src/components/Marketplace/List";
 import { useQuery } from "react-query";
-import { getListNFT } from "src/lib/api";
+import { getListNFT, getGameLogo } from "src/lib/api";
 import { useEffect, useMemo, useState } from "react";
 import ListSkeleton from "src/components/common/ListSkeleton/ListSkeleton";
 import { getNFT } from "src/lib/api";
 import NoData from "src/components/common/NoData";
 import { useSelector } from "react-redux";
 
+const names = ["Price: Low to High", "Price: High to Low", "Newest"];
+
 export default function Marketplace() {
 	const [listNft, setListNft] = useState();
 	const [originalList, setOriginalList] = useState([]);
 	const [loadingList, setLoadingList] = useState(true);
 	const [currentPage, setCurrentPage] = useState(1);
+	const [data, setData] = useState();
+	const [isLoading, setIsLoading] = useState(false);
+	const [sort, setSort] = useState(names[2]);
 	const query = {
-		limit: 100000000
+		limit: 100000000,
+		sort: sort
 	};
-	
-	const { isLoading, error, data } = useQuery("getListNFT", () => getListNFT(query));
-	const [totalItems, setTotalItems] = useState(0);
+	const filter = {}
 	const activeGames = useSelector(state => state?.filter) || [];
+
+	useEffect(() => {
+		getData();
+	}, [sort])
 
 	useEffect(() => {
 		if (activeGames.length) {
@@ -29,35 +37,36 @@ export default function Marketplace() {
 				activeGames.find(i => i.address.toLowerCase() === nft.nft1155Address.toLowerCase())
 			);
 			setListNft([...a]);
-			setTotalItems(a.length);
 		} else {
 			setListNft([...originalList]);
-			setTotalItems(originalList.length);
 		}
 		setCurrentPage(1);
 	}, [activeGames, originalList]);
 
-	useEffect(() => {
-		getFullNftData();
-	}, [data]);
+	const getData = async () => {
+		let fetchedData;
+		try {
+			setIsLoading(true);
+			fetchedData = await getListNFT(query, filter);
+			setData(fetchedData)
 
-	const getFullNftData = async () => {
-		setLoadingList(true);
-		if (!data) return;
-		setTotalItems(data?.option.totalItem);
-		
-		let arr = [];
-		await Promise.all(
-			data?.data.map(async (nft, id) => {
-				let nftData = await getNFT(nft.nft1155Address, nft?.tokenIds1155?.[0]);
-
-				arr[id] = { ...nft, name: nftData.name, tokenId: nftData.tokenId, imageUrl: nftData.imageUrl };
-			})
-		);
-		setListNft([...arr]);
-		setOriginalList([...arr]);
-		setLoadingList(false);
-	};
+			let arr = [];
+			await Promise.all(
+				fetchedData?.data.map(async (nft, id) => {
+					let nftData = await getNFT(nft.nft1155Address, nft?.tokenIds1155?.[0]);
+					let gameLogo = await getGameLogo(nft.nft1155Address);
+					arr[id] = { ...nft, name: nftData.name, tokenId: nftData.tokenId, imageUrl: nftData.imageUrl, gameLogo: gameLogo };
+				})
+			);
+			setListNft([...arr]);
+			setOriginalList([...arr]);
+			setLoadingList(false);
+		} catch (error) {
+			console.log(error)
+		} finally {
+			setIsLoading(false);
+		}
+	}
 
 	return (
 		<Box display="flex">
@@ -69,16 +78,16 @@ export default function Marketplace() {
 					padding: "24px 32px",
 					overflowY: "auto",
 				}}>
-				<Toolbar listNft={listNft} setListNft={setListNft} originalList={originalList} />
+				<Toolbar listNft={listNft} setListNft={setListNft} originalList={originalList} sort={sort} setSort={setSort}/>
 				<div style={{ marginTop: "40px" }}>
-					{loadingList && isLoading ? (
+					{loadingList || isLoading ? (
 						<div style={{ display: "flex", flexWrap: "wrap" }}>
 							<ListSkeleton />
 						</div>
 					) : !listNft?.length ? (
 						<NoData />
 					) : (
-						<List listNft={listNft} totalItems={totalItems} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+						<List listNft={listNft} totalItems={listNft.length} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
 					)}
 				</div>
 			</Box>

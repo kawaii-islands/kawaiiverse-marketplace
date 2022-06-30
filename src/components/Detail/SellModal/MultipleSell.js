@@ -24,8 +24,6 @@ const MultipleSell = ({ handleClick, info }) => {
 	const [endPriceUSD, setEndPriceUSD] = useState(0);
 	const { kwtPrice } = useSelector(selectPrice);
 
-	console.log(kwtPrice);
-
 	const onSubmit = data => {
 		data.duration = Math.floor(3600 * 24 * Number(data.duration));
 		if (checkValid(data)) handleClick(data);
@@ -53,7 +51,6 @@ const MultipleSell = ({ handleClick, info }) => {
 	};
 
 	const checkAmount = e => {
-		console.log(e.target.value);
 		if (e.target.value === null || e.target.value === "") {
 			setErrorAmount(true);
 			setErrorAmountMessage("Please input");
@@ -88,7 +85,6 @@ const MultipleSell = ({ handleClick, info }) => {
 	};
 
 	const checkInput = (e, setError, setErrorMessage) => {
-		console.log(e.target.value);
 		let valid = true;
 		if (e.target.value === null || e.target.value === "") {
 			setError(true);

@@ -21,13 +21,11 @@ const SellModal = ({ show, setShow, info, setSelling, setStepLoading, setHash, i
 	if (!info) return;
 	const { account, chainId, library } = useWeb3React();
 	const navigate = useNavigate();
-	console.log(info.contract);
 	const [tab, setTab] = useState(1);
 
 	const handleClick = async inputData => {
 		setShow(false);
 		setSelling(true);
-		console.log(inputData);
 		try {
 			setStepLoading(0);
 
@@ -39,12 +37,10 @@ const SellModal = ({ show, setShow, info, setSelling, setStepLoading, setHash, i
 			}
 
 			const isApproved = await isApprovedForAll();
-			console.log("isApproved : ", isApproved);
 
 			if (!isApproved) {
 				setStepLoading(0);
 				await approve();
-				console.log("isApproved : ", await isApprovedForAll());
 			}
 
 			let aunction = [];

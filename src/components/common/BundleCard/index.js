@@ -40,7 +40,6 @@ const NFTCard = ({ auction, price }) => {
 				}
 			})
 		).then(responses => {
-			console.log(responses);
 			setDataList(responses);
 		});
 	};

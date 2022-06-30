@@ -10,7 +10,6 @@ const cx = cn.bind(styles);
 export default function Game({ game, active }) {
 	const dispatch = useDispatch();
 	const activeGames = useSelector(state => state?.filter) || [];
-
 	const onClick = () => {
 		if (activeGames.length && activeGames.find(item => item.address === game.address)) {
 			let arr = activeGames.filter(item => item.address !== game.address)

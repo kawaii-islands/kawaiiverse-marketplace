@@ -34,6 +34,15 @@ const NFTCard2 = ({ item, type }) => {
 		itemName = item.name;
 		itemPrice = getCurrentPriceFromBackend(item);
 		gameLogo = item.gameLogo;
+	} else if (type == "marketplace") {
+		itemAddress = item.nft1155Address;
+		tokenId = item.tokenIds1155[0];
+		itemBalance = parseInt(0);
+		itemSelling = parseInt(item.amounts[0]);
+		itemImg = item.imageUrl;
+		itemName = item.name;
+		itemPrice = getCurrentPriceFromBackend(item);
+		gameLogo = item.gameLogo;
 	} else {
 		itemAddress = item.game.address;
 		tokenId = item.detail.tokenId;
@@ -45,7 +54,7 @@ const NFTCard2 = ({ item, type }) => {
 	}
 
 	const handleClickCard = () => {
-		if (type !== "onSale") navigate(`/detail/${itemAddress}/${tokenId}`);
+		if (type !== "onSale" && type !== "marketplace") navigate(`/detail/${itemAddress}/${tokenId}`);
 		else navigate(`/auction/${item.auctionIndex}`);
 	};
 
@@ -56,16 +65,18 @@ const NFTCard2 = ({ item, type }) => {
 					<div className={cx("tag")}>#{tokenId}</div>
 					<img src={gameLogo} className={cx("logo")} />
 				</div>
-				<div className={cx("total")}>Total: {itemBalance + itemSelling}</div>
+				<div className={cx("total")}>
+					{type !== "onSale" && type !== "marketplace" && <>Total: {itemBalance + itemSelling}</>}
+				</div>
 				<div className={cx("image")}>
 					<>
 						<img className={cx("avatar")} src={itemImg} />
 					</>
-					{type === "onSale" && <div className={cx("balance")}>{itemSelling}</div>}
+					{(type === "onSale" || type === "marketplace") && <div className={cx("balance")}>{itemSelling}</div>}
 				</div>
 				<div className={cx("name")}>{itemName}</div>
 
-				{type === "onSale" && (
+				{(type === "onSale" || type === "marketplace") && (
 					<div className={cx("price")}>
 						<img src={require(`src/assets/icons/kwt.png`)} />
 						<div className={cx("amount")}>{itemPrice}</div>

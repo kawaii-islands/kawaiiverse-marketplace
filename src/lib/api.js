@@ -13,3 +13,9 @@ export const getNFT = async (contract, id) => {
 	if (res.data.status === 1) return res.data.data;
 	throw new Error(res.data.message);
 };
+
+export const getGameLogo = async contract => {
+	const res = await axios.get(`${ENDPOINT}/game/logo?contract=${contract}`);
+	if (res.data.status === 1) return res.data.data[0].logoUrl;
+	throw new Error(res.data.message);
+};
