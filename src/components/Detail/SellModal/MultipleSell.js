@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 
 const cx = cn.bind(styles);
 
-const MultipleSell = ({ handleClick, info }) => {
+const MultipleSell = ({ handleClick, info, isBundle }) => {
 	const { register, handleSubmit } = useForm();
 	const [errorAmount, setErrorAmount] = useState(false);
 	const [errorStartPrice, setErrorStartPrice] = useState(false);
@@ -109,7 +109,12 @@ const MultipleSell = ({ handleClick, info }) => {
 				<div className={cx("row")}>
 					<span>Amount</span>
 					<div className={errorAmount ? cx("row-right-error") : cx("row-right")}>
-						<input type="number" {...register("amount")} onChange={e => checkAmount(e)} />
+						{isBundle ? (
+							<input type="number" value={"1"} readOnly />
+						) : (
+							<input type="number" {...register("amount")} onChange={e => checkAmount(e)} />
+						)}
+						{/* <input type="number" {...register("amount")} onChange={e => checkAmount(e)} /> */}
 					</div>
 				</div>
 				<div className={cx("row2")}>{errorAmount && <div className={cx("row2-error")}>{errorAmountMessage}</div>}</div>

@@ -92,7 +92,7 @@ const SingleSell = ({ handleClick, info, isBundle }) => {
 					<span>Amount</span>
 					<div className={errorAmount ? cx("row-right-error") : cx("row-right")}>
 						{isBundle ? (
-							<input type="number" readOnly />
+							<input type="number" value={"1"} readOnly />
 						) : (
 							<input type="number" {...register("amount")} onChange={e => checkAmount(e)} />
 						)}

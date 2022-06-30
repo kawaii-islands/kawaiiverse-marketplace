@@ -140,7 +140,7 @@ const SellModal = ({ show, setShow, info, setSelling, setStepLoading, setHash, i
 					</div>
 					<div className={cx("tab-content")}>
 						{tab === 1 && <SingleSell handleClick={handleClick} info={info} isBundle={isBundle} />}
-						{tab === 2 && <MultipleSell handleClick={handleClick} info={info} />}
+						{tab === 2 && <MultipleSell handleClick={handleClick} info={info} isBundle={isBundle} />}
 					</div>
 				</div>
 			</Modal>

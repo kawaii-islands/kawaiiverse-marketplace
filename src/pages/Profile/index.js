@@ -42,7 +42,6 @@ export default function Profile() {
 				});
 			});
 			nftList = nftList.reverse();
-			console.log(nftList);
 			setListNft(nftList);
 			setLoading(false);
 		} catch (error) {

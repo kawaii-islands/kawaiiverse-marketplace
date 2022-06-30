@@ -36,7 +36,6 @@ const SellBundle = ({ listNft, loading }) => {
 		let array =  listNft.map((game, index) => {
 			return {contract: game.detail.contract, isSell: 0}
 		})
-		console.log(array);
 		setListSellingContract(array);
 	}
 
@@ -94,7 +93,6 @@ const SellBundle = ({ listNft, loading }) => {
 					<Grid container spacing={2} justifyContent="center">
 						{listNft.map((item, index) => (
 							<Grid item key={item.detail._id}>
-								{console.log(item)}
 								<NFTCardSellBundle
 									item={item}
 									setListSellBundle={setListSellBundle}
