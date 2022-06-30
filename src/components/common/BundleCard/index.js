@@ -50,7 +50,10 @@ const NFTCard = ({ auction, price }) => {
 
 	return (
 		<div className={cx("nft-card")}>
-			<div className={cx("nft-card-container")} onClick={() => navigate(`/detailBundle/${auction.auctionIndex}`)}>
+			<div
+				className={cx("nft-card-container")}
+				// onClick={() => navigate(`/detailBundle/${auction.auctionIndex}`)}
+			>
 				<div className={cx("nft-card-container-title")}>
 					<div>
 						<div className={cx("nft-card-container-title-name")}>Bundle #{auction.auctionIndex}</div>

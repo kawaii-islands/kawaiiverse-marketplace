@@ -9,8 +9,6 @@ import axios from "axios";
 import qs from "query-string";
 
 export default function List({ listNft, totalItems, currentPage, setCurrentPage }) {
-	console.log(listNft);
-	console.log(currentPage);
 	const [displayList, setDisplayList] = useState();
 	const limit = 8;
 

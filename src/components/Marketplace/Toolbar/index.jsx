@@ -19,11 +19,11 @@ import { setFilter } from "src/lib/redux/slices/filter";
 
 const cx = cn.bind(styles);
 
-const names = ["Price: Low to High", "Price: High to Low", "Newest", "Oldest"];
+const names = ["Price: Low to High", "Price: High to Low", "Newest"];
 
-export default function Toolbar({ listNft, setListNft, originalList }) {
+export default function Toolbar({ listNft, setListNft, originalList, sort, setSort }) {
 	const dispatch = useDispatch();
-	const [sort1, setSort] = useState(names[2]);
+	const [sort1, setSort1] = useState(names[2]);
 	const activeGames = useSelector(state => state?.filter) || [];
 	const [searchValue, setSearchValue] = useState();
 
@@ -53,49 +53,19 @@ export default function Toolbar({ listNft, setListNft, originalList }) {
 	};
 
 	const handleSort = sort => {
-		if (sort === sort1) {
-			setSort("");
-			setListNft(originalList);
-			if (search !== "") {
-				let listSearch = listNft.filter(nft => {
-					if (nft.name) {
-						return nft?.name.toUpperCase().includes(search.toUpperCase()) || nft?.tokenId.toString().includes(search);
-					}
-					return false;
-				});
-				setListSearch([...listSearch]);
-			}
-			return;
+		switch (sort) {
+			case "Price: Low to High":
+				setSort("CurrentPriceAsc");
+				break;
+			
+			case "Price: High to Low":
+				setSort("CurrentPriceDesc");
+				break;
+		
+			default:
+				setSort("Latest");
+				break;
 		}
-
-		setSort(sort);
-		let newList = search !== "" ? [...listSearch] : [...listNft];
-
-		if (sort === 0) {
-			newList = newList.sort(function (a, b) {
-				return Number(a.price) - Number(b.price);
-			});
-		}
-
-		if (sort === 1) {
-			newList = newList.sort(function (a, b) {
-				return Number(b.price) - Number(a.price);
-			});
-		}
-
-		if (sort === 2) {
-			newList = [...originalList];
-		}
-
-		if (sort === 3) {
-			newList = [...originalList].reverse();
-		}
-
-		if (search !== "") {
-			setListSearch(newList);
-			return;
-		}
-		setListNft(newList);
 	};
 
 	return (
@@ -118,21 +88,21 @@ export default function Toolbar({ listNft, setListNft, originalList }) {
 					// value={searchValue}
 					onChange={e => handleSearch(e.target.value)}
 				/>
-				{/* <FormControl>
+				<FormControl>
 					<Select
 						className={cx("sort")}
 						displayEmpty
 						input={<OutlinedInput />}
 						value={sort1}
-						onChange={e => setSort(e.target.value)}
+						onChange={e => handleSort(e.target.value)}
 						size="small">
 						{names.map((name, id) => (
-							<MenuItem key={name} value={name} className={cx("item")} onClick={() => handleSort(id)}>
+							<MenuItem key={name} value={name} className={cx("item")} onClick={()=> {setSort1(names[id])}}>
 								{name}
 							</MenuItem>
 						))}
 					</Select>
-				</FormControl> */}
+				</FormControl>
 			</Box>
 
 			{activeGames.length > 0 && (
