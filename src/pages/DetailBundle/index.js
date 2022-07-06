@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import styles from "./index.module.scss";
 import cn from "classnames/bind";
 import { Grid, Typography } from "@mui/material";
-import CarouselComponent from "./CarouselComponent";
+// import CarouselComponent from "./CarouselComponent";
 import NftInformation from "./NftInformation";
 import NftImage from "./NftImage";
 import URL from "src/constants/endpoint";
