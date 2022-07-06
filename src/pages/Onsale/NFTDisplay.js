@@ -14,6 +14,7 @@ import NFTList from "./NFTList";
 import ListSkeleton from "src/components/common/ListSkeleton/ListSkeleton";
 import { setSellBundleList } from "src/lib/redux/slices/bundle";
 import { useDispatch } from "react-redux";
+import { getAllAuction, getAuctionFullDataByQuery } from "src/lib/api";
 
 const cx = cn.bind(styles);
 const PAGE_SIZE = 10;
@@ -32,54 +33,9 @@ const NFTDisplay = () => {
 	}, [account, page]);
 
 	const getAuctionList = async () => {
-		const configGetLength = {
-			headers: {
-				"Content-Type": "application/json",
-			},
-			params: {
-				page: 1,
-				limit: 10000,
-				sort: "Latest",
-			},
-		};
-
-		const config = {
-			headers: {
-				"Content-Type": "application/json",
-			},
-			params: {
-				page: page,
-				limit: PAGE_SIZE,
-				sort: "Latest",
-			},
-		};
-
-		const data = {
-			filters: { sender: account },
-		};
-
-		const resLength = await axios.post(URL + "/marketplace", data, configGetLength);
-		let sellingListAll = resLength.data.data;
-
-		const res = await axios.post(URL + "/marketplace", data, config);
-		let sellingList = res.data.data;
-		console.log("sellingList :>> ", sellingList);
-
-		const newSellingList = await Promise.all(
-			sellingList.map(async sellingItem => {
-				const response = await axios.get(
-					`${URL}/nft/${sellingItem.nft1155Address.toLowerCase()}/${sellingItem.tokenIds1155[0]}`
-				);
-
-				const gameLogo = await axios.get(`${URL}/game/logo?contract=` + sellingItem.nft1155Address.toLowerCase());
-				return {
-					...sellingItem,
-					name: response.data.data.name,
-					imageUrl: response.data.data.imageUrl,
-					gameLogo: gameLogo.data.data[0].logoUrl,
-				};
-			})
-		);
+		setLoading(true);
+		const sellingListAll = await getAllAuction(account);
+		const newSellingList = await getAuctionFullDataByQuery(account, page, PAGE_SIZE, "Latest");
 
 		dispatch(setSellBundleList(newSellingList));
 		setSaleList(newSellingList);
