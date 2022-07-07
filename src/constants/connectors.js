@@ -4,6 +4,7 @@ import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
 const RPC_URL_1 = "https://mainnet.infura.io/v3/920d962b397d4646989aa594147ba78c";
 const RPC_URL_56 = "https://bsc-dataseed4.defibit.io/";
 const RPC_URL_97 = "https://data-seed-prebsc-2-s2.binance.org:8545/";
+export const URL = "http://159.223.81.170:3000";
 
 const POLLING_INTERVAL = 12000;
 export const RPC_URLS = {

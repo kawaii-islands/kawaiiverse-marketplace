@@ -1,5 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.min.js";
 import "./index.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
@@ -9,6 +11,8 @@ import { Web3Provider } from "@ethersproject/providers";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import axios from "axios";
 import ENDPOINT from "src/constants/endpoint";
+
+import "react-toastify/dist/ReactToastify.css";
 
 const defaultQueryFn = async ({ queryKey }) => {
 	const res = await axios.get(`${ENDPOINT}/${queryKey[0]}`);

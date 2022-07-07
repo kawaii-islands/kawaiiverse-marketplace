@@ -17,18 +17,28 @@ import ERC20_ABI from "src/abi/erc20.json";
 import web3 from "web3";
 import { BSC_CHAIN_ID } from "src/constants/network";
 import { createNetworkOrSwitch, read, write } from "src/lib/web3";
+import { useNavigate } from "react-router-dom";
 
 const cx = cn.bind(styles);
 
-export default function BuyModal({ show, setShow, auction, info, index }) {
+export default function BuyModal({ show, setShow, auction, info, index, setBuying, setStepLoading, setHash }) {
 	const { account, chainId, library } = useWeb3React();
 	const { kwtPrice } = useSelector(state => state?.price);
 	const balance = useSelector(state => state?.balance?.kwtBalance);
 	const currentPrice = useMemo(() => getCurrentPriceOnChain(auction), [auction]);
 	const [price, setPrice] = useState(currentPrice);
+	const navigate = useNavigate();
+
+	const callback = hash => {
+		setHash(hash);
+		setStepLoading(1);
+	};
 
 	const buy = async () => {
 		try {
+			setStepLoading(0);
+			setBuying(true);
+			setShow(false);
 			if (!price || price < 0) {
 				return toast.error("Invalid amount");
 			}
@@ -50,9 +60,6 @@ export default function BuyModal({ show, setShow, auction, info, index }) {
 			if (Number(allowance) < price * 10 ** 18) {
 				await approve();
 			}
-			// const callback = hash => {
-			// 	setHash(hash);
-			// };
 
 			await write(
 				"bid",
@@ -63,12 +70,20 @@ export default function BuyModal({ show, setShow, auction, info, index }) {
 				{
 					from: account,
 				},
-				// callback
+				callback
 			);
+			setStepLoading(2);
+			setTimeout(() => {
+				navigate(`/profile/account`);
+			}, 1500);
 		} catch (error) {
+			setStepLoading(-1);
 			console.log(error);
 			toast.error(error.message || "An error occurred!");
 		} finally {
+			setTimeout(() => {
+				setBuying(false);
+			}, 2000);
 		}
 	};
 

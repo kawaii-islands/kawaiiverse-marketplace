@@ -1,0 +1,17 @@
+.title {
+	font-weight: bold;
+	font-size: 20px;
+	color: #833f1d;
+	margin-bottom: 16px;
+}
+
+.grid {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+	&::after {
+		content: "";
+		flex: auto;
+	}
+	min-height: 200px;
+}

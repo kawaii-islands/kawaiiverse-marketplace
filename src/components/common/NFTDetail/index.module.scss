@@ -117,7 +117,7 @@
 		.id {
 			font-weight: 600;
 			margin-bottom: 15px;
-      opacity: 0.8;
+			opacity: 0.8;
 		}
 
 		.colors {
@@ -204,7 +204,7 @@
 				font-size: 16px;
 				color: #833f1d;
 				margin-bottom: 15px;
-        opacity: 0.8;
+				opacity: 0.8;
 
 				a {
 					color: #833f1d;
@@ -225,7 +225,15 @@
 				}
 
 				.button {
-          margin-bottom: 0;
+					margin-bottom: 0;
+					@media (max-width: 600px) {
+						margin-top: 10px;
+					}
+				}
+
+				.button-sell {
+					background-color: #ff7600 !important;
+					margin-bottom: 0;
 					@media (max-width: 600px) {
 						margin-top: 10px;
 					}

@@ -18,6 +18,7 @@ import "react-toastify/dist/ReactToastify.css";
 import LoadingPage from "./components/common/LoadingPage";
 import Web3 from "web3";
 import { useWeb3React } from "@web3-react/core";
+import DetailBundle from "./pages/DetailBundle";
 
 const lazyMinLoadTime = (factory, minLoadTimeMs = 2000) =>
 	React.lazy(() =>
@@ -30,6 +31,7 @@ const persistor = persistStore(store);
 const Marketplace = lazyMinLoadTime(() => import("src/pages/Marketplace"));
 const Profile = lazyMinLoadTime(() => import("src/pages/Profile"));
 const Auction = lazyMinLoadTime(() => import("src/pages/Auction"));
+const Detail = lazyMinLoadTime(() => import("src/pages/Detail"));
 
 const UpdatePrice = () => {
 	const dispatch = useDispatch();
@@ -89,6 +91,8 @@ export default function App() {
 									<Route path="/" element={<Marketplace />} />
 									<Route path="profile/:tab" element={<Profile />} />
 									<Route path="auction/:index" element={<Auction />} />
+									<Route path="detail/:contract/:index" element={<Detail />} />
+									<Route path="detailBundle/:gameAddress/:auction" element={<DetailBundle />} />
 								</Routes>
 							</Suspense>
 						</div>

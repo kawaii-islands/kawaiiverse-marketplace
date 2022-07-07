@@ -7,7 +7,8 @@ import { Typography, Button } from "@mui/material";
 
 const cx = cn.bind(styles);
 
-const NFTDetail = ({ auction, info, sold, unavailable, onClick, isOwner }) => {
+const NFTDetail = ({ auction, info, sold, unavailable, sell, onClick, isOwner }) => {
+	if (!info) return;
 	return (
 		<div className={cx("nft-detail")}>
 			<div className={cx("left-container")}>
@@ -28,7 +29,17 @@ const NFTDetail = ({ auction, info, sold, unavailable, onClick, isOwner }) => {
 				<Typography variant="h4" className={cx("name")}>
 					{info.name}
 				</Typography>
-				{
+				{sell && (
+					<>
+						<Typography variant="body1" className={cx("id")}>
+							Quantity: {info.balance}
+						</Typography>
+						<Typography variant="body1" className={cx("id")}>
+							Author: {info.author}
+						</Typography>
+					</>
+				)}
+				{auction && (
 					<>
 						<Typography variant="body1" className={cx("id")}>
 							Quantity: {auction.amounts[0]}
@@ -44,7 +55,7 @@ const NFTDetail = ({ auction, info, sold, unavailable, onClick, isOwner }) => {
 							</a>
 						</div>
 					</>
-				}
+				)}
 				<div className={cx("divider")} />
 				{/* <span>
 					<Button variant="contained" color="warning" className={cx("button")}>
@@ -54,7 +65,8 @@ const NFTDetail = ({ auction, info, sold, unavailable, onClick, isOwner }) => {
 				<>
 					<div className={cx("label")}>Price</div>
 					<div className={cx("price")}>
-						<Progress auction={auction} />
+						{auction && <Progress auction={auction} />}
+
 						<div className={cx("price-right")}>
 							{sold ? (
 								<div className={cx("sold")}>Sold</div>
@@ -69,6 +81,10 @@ const NFTDetail = ({ auction, info, sold, unavailable, onClick, isOwner }) => {
 								<Button variant="contained" color="secondary" className={cx("button")} onClick={onClick}>
 									Cancel
 								</Button>
+							) : sell ? (
+								<Button variant="contained" color="secondary" className={cx("button-sell")} onClick={onClick}>
+									Sell
+								</Button>
 							) : (
 								<Button variant="contained" color="warning" className={cx("button")} onClick={onClick}>
 									Buy
@@ -77,7 +93,6 @@ const NFTDetail = ({ auction, info, sold, unavailable, onClick, isOwner }) => {
 						</div>
 					</div>
 				</>
-				{/* <Relation id={id} category={category} /> */}
 			</div>
 		</div>
 	);

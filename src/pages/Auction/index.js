@@ -15,6 +15,10 @@ import { getNFT } from "src/lib/api";
 import BuyModal from "src/components/Auction/Buy";
 import { useWeb3React } from "@web3-react/core";
 import web3 from "web3";
+import LoadingModal from "src/components/common/LoadingModal/LoadingModal";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.min.js";
+import { useNavigate } from "react-router-dom";
 
 const cx = cn.bind(styles);
 const AUCTION_STATUS = ["AUCTION", "CLOSE", "CANCEL"];
@@ -26,7 +30,13 @@ export default function Auction() {
 	const [show, setShow] = useState(false);
 	const [unavailable, setUnavailable] = useState(false);
 	const [sold, setSold] = useState(false);
+	const [buying, setBuying] = useState(false);
+	const [cancelling, setCancelling] = useState(false);
+	const [hash, setHash] = useState("");
+	const [stepLoading, setStepLoading] = useState(0);
+	const [loadingTitle, setLoadingTitle] = useState("");
 	const { index } = useParams();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		getAuction();
@@ -39,7 +49,6 @@ export default function Auction() {
 	const getAuction = async () => {
 		try {
 			const auction = await read("getAuction", BSC_CHAIN_ID, addresses.MARKETPLACE, MARKETPLACE_ABI, [index]);
-			console.log(auction);
 			if (auction.startedAt === "0") return toast.error("Auction not found");
 			setAuction(auction);
 			if (AUCTION_STATUS[auction.status] === "CLOSE") {
@@ -56,24 +65,26 @@ export default function Auction() {
 	const getNFTInfo = async (contract, id) => {
 		try {
 			const info = await getNFT(contract, id);
-			console.log(info);
 			setInfo(info);
 		} catch (error) {
 			toast.error(error?.message || "An error occurred");
 		}
 	};
+	const callback = hash => {
+		setHash(hash);
+		setStepLoading(1);
+	};
 
 	const cancelAuction = async () => {
 		try {
+			setStepLoading(0);
+			setCancelling(true);
 			if (chainId !== BSC_CHAIN_ID) {
 				const error = await createNetworkOrSwitch(library.provider);
 				if (error) {
 					throw new Error("Please change network to Binance smart chain.");
 				}
 			}
-			const callback = hash => {
-				setHash(hash);
-			};
 
 			await write(
 				"cancelAuction",
@@ -81,13 +92,21 @@ export default function Auction() {
 				addresses.MARKETPLACE,
 				MARKETPLACE_ABI,
 				[index],
-				{ from: account }
-				// callback
+				{ from: account },
+				callback
 			);
+			setStepLoading(2);
+			setTimeout(() => {
+				navigate(`/profile/account`);
+			}, 1000);
 		} catch (error) {
+			setStepLoading(-1);
 			console.log(error);
 			toast.error(error.message || "An error occurred!");
 		} finally {
+			setTimeout(() => {
+				setCancelling(false);
+			}, 2000);
 		}
 	};
 
@@ -108,7 +127,33 @@ export default function Auction() {
 				onClick={onClick}
 				isOwner={isOwner}
 			/>
-			<BuyModal show={show} setShow={setShow} auction={auction} info={info} index={index} />
+			<BuyModal
+				show={show}
+				setShow={setShow}
+				auction={auction}
+				info={info}
+				index={index}
+				setBuying={setBuying}
+				setStepLoading={setStepLoading}
+				setHash={setHash}
+			/>
+			{(buying || cancelling) && (
+				<LoadingModal
+					show={buying || cancelling}
+					network={"BscScan"}
+					loading={true}
+					title={loadingTitle}
+					stepLoading={stepLoading}
+					onHide={() => {
+						setBuying(false);
+						setCancelling(false);
+						setHash(undefined);
+						setStepLoading(0);
+					}}
+					hash={hash}
+					hideParent={() => {}}
+				/>
+			)}
 		</div>
 	);
 }

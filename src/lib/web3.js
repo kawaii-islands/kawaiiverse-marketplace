@@ -6,6 +6,8 @@ import FACTORY_ABI from "src/abi/factory.json";
 import NFT_1155_ABI from "src/abi/nft-1155.json";
 import addresses from "src/constants/addresses";
 import ERC20_ABI from "src/abi/erc20.json";
+import axios from "axios";
+import URL from "src/constants/endpoint";
 
 export const createNetworkOrSwitch = async provider => {
 	if (!provider.isMetaMask) {
@@ -110,8 +112,20 @@ export const getListGame = async (from, numberOfGame) => {
 		.map((_, idx) => read("nft1155", BSC_CHAIN_ID, addresses.FACTORY, FACTORY_ABI, [idx + from]));
 	const listGame = await Promise.all(listPromise);
 	const listName = await Promise.all(listGame.map(address => read("name", BSC_CHAIN_ID, address, NFT_1155_ABI, [])));
+	const listLogo = await Promise.all(
+		listGame.map(async address => {
+			let res = await axios.get(`${URL}/game/logo?contract=${address}`);
+			if (res.status === 200 && res.data.data[0]) {
+				return res.data.data[0].logoUrl;
+			}
+		})
+	);
+
+	console.log('listName[0] :>> ', listName[0]);
+
 	return listGame.map((address, idx) => ({
 		name: listName[idx],
 		address,
+		logoUrl: listLogo[idx],
 	}));
 };

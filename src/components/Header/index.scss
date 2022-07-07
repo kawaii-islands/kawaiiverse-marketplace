@@ -14,11 +14,44 @@
 	line-height: 50px;
 	margin-left: 50px;
 	text-decoration: none;
-	color: white;
+	color: white !important;
+	padding: 0px !important;
 	cursor: pointer;
 	font-size: 20px;
 	font-weight: 700;
 	position: relative;
+	margin: 0 40px 0 0;
+
+	// @media (max-width: 1199px) {
+	// 	margin: 0;
+	// 	padding: 17px 20px 17px 34px !important;
+	// 	width: 310px;
+	// 	line-height: 10px;
+	// 	font-size: 18px;
+	// 	display: flex;
+	// 	align-items: center;
+	// 	justify-content: flex-start;
+	// 	position: relative;
+	// 	color: #833f1d !important;
+
+	// 	img {
+	// 		margin-right: 10px;
+	// 	}
+
+	// 	&::after {
+	// 		content: " ";
+	// 		position: absolute;
+	// 		right: 0;
+	// 		border: solid #833f1d;
+	// 		border-width: 0 2px 2px 0;
+	// 		padding: 3px;
+	// 		transform: rotate(-45deg);
+	// 	}
+
+	// 	&:global(.active) {
+	// 		color: #da520d !important;
+	// 	}
+	// }
 
 	&::after {
 		position: absolute;

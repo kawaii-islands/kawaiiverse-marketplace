@@ -8,6 +8,7 @@ import gameSlice from "./slices/game";
 import querySlice from "./slices/query";
 import filterSlice from "./slices/filter";
 import balanceSlice from "./slices/balance";
+import sellBundleListSlice from "./slices/bundle";
 
 const reducers = combineReducers({
 	price: priceSlice,
@@ -15,12 +16,13 @@ const reducers = combineReducers({
 	query: querySlice,
 	filter: filterSlice,
 	balance: balanceSlice,
+	sellBundleList: sellBundleListSlice
 });
 
 const persistConfig = {
 	key: "root",
 	storage,
-	whitelist: ["price", "games", "balance"],
+	whitelist: ["price", "games", "balance" ],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);
